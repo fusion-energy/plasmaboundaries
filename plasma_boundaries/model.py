@@ -1,5 +1,4 @@
 from . import magnetic_flux
-from .parameters import compute_N_i
 
 import numpy as np
 from scipy.optimize import fsolve
@@ -145,6 +144,19 @@ def constraints_double_null(p, params):
         psi_yy(1 - epsilon, 0) + N_2*psi_x(1 - epsilon, 0),
         ]
     return list_of_equations
+
+
+def compute_N_i(params):
+    triangularity = params["triangularity"]
+    epsilon = params["epsilon"]
+    elongation = params["elongation"]
+
+    alpha = np.arcsin(triangularity)  # alpha
+    N_1 = -(1 + alpha)/(epsilon*elongation**2)
+    N_2 = (1 - alpha)/(epsilon*elongation**2)
+    N_3 = -elongation/(epsilon*elongation*np.cos(alpha)**2)
+
+    return N_1, N_2, N_3
 
 
 def compute_coefficients_c_i(params, constraints, coefficient_number):
