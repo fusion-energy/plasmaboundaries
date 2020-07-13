@@ -4,6 +4,12 @@ import numpy as np
 from scipy.optimize import fsolve
 
 
+def val_from_sp(expression):
+    def val(x, y):
+        return expression.subs('x', x).subs('y', y)
+    return val
+
+
 def constraints(p, params):
     """Creates all the constraints for numerical solving
 
@@ -24,17 +30,10 @@ def constraints(p, params):
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
 
-    def psi_x(x, y):
-        return psi_x_sp.subs('x', x).subs('y', y)
-
-    def psi_y(x, y):
-        return psi_y_sp.subs('x', x).subs('y', y)
-
-    def psi_xx(x, y):
-        return psi_xx_sp.subs('x', x).subs('y', y)
-
-    def psi_yy(x, y):
-        return psi_yy_sp.subs('x', x).subs('y', y)
+    psi_x = val_from_sp(psi_x_sp)
+    psi_y = val_from_sp(psi_y_sp)
+    psi_xx = val_from_sp(psi_xx_sp)
+    psi_yy = val_from_sp(psi_yy_sp)
 
     list_of_equations = [
         psi(1 + epsilon, 0, p, A),
@@ -70,17 +69,10 @@ def constraints_single_null(p, params):
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
 
-    def psi_x(x, y):
-        return psi_x_sp.subs('x', x).subs('y', y)
-
-    def psi_y(x, y):
-        return psi_y_sp.subs('x', x).subs('y', y)
-
-    def psi_xx(x, y):
-        return psi_xx_sp.subs('x', x).subs('y', y)
-
-    def psi_yy(x, y):
-        return psi_yy_sp.subs('x', x).subs('y', y)
+    psi_x = val_from_sp(psi_x_sp)
+    psi_y = val_from_sp(psi_y_sp)
+    psi_xx = val_from_sp(psi_xx_sp)
+    psi_yy = val_from_sp(psi_yy_sp)
     x_sep, y_sep = 1-1.1*triangularity*epsilon, -1.1*elongation*epsilon
     list_of_equations = [
         psi(1 + epsilon, 0, p, A),
@@ -121,17 +113,10 @@ def constraints_double_null(p, params):
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
 
-    def psi_x(x, y):
-        return psi_x_sp.subs('x', x).subs('y', y)
-
-    def psi_y(x, y):
-        return psi_y_sp.subs('x', x).subs('y', y)
-
-    def psi_xx(x, y):
-        return psi_xx_sp.subs('x', x).subs('y', y)
-
-    def psi_yy(x, y):
-        return psi_yy_sp.subs('x', x).subs('y', y)
+    psi_x = val_from_sp(psi_x_sp)
+    psi_y = val_from_sp(psi_y_sp)
+    psi_xx = val_from_sp(psi_xx_sp)
+    psi_yy = val_from_sp(psi_yy_sp)
 
     x_sep, y_sep = 1-1.1*triangularity*epsilon, 1.1*elongation*epsilon
     list_of_equations = [
