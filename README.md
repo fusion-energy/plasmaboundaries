@@ -30,6 +30,9 @@ The magnetic flux can now be calculated for any coordinates and ploted with matp
 print(psi(1.0, 0))
 
 # plot the results
+import matplotlib.pyplot as plt
+import numpy as np
+
 xmin, xmax = 0.6, 1.4
 ymin, ymax = -0.6, 0.6
 x = np.arange(xmin, xmax, step=0.01)
@@ -39,7 +42,8 @@ Z = psi(X, Y)  # compute magnetic flux
 
 levels = np.linspace(Z.min(), 0, num=25)
 CS = plt.contourf(X, Y, Z, levels=levels, vmax=0)
-plt.contour(X, Y, Z, levels=[0], colors="black")
+plt.contour(X, Y, Z, levels=[0], colors="black") # display the separatrix
+
 plt.colorbar(CS, label="Magnetic flux $\Psi$")
 plt.xlabel('Radius $R/R_0$')
 plt.ylabel('Height $Z/R_0$')
