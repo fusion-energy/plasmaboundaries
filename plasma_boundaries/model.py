@@ -18,9 +18,7 @@ def constraints(p, parameters):
     epsilon = parameters["epsilon"]
     triangularity = parameters["triangularity"]
     elongation = parameters["elongation"]
-    N_1 = parameters["N_1"]
-    N_2 = parameters["N_2"]
-    N_3 = parameters["N_3"]
+    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
     psi = magnetic_flux.psi_up_down_symmetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -64,9 +62,7 @@ def constraints_single_null(p, parameters):
     epsilon = parameters["epsilon"]
     triangularity = parameters["triangularity"]
     elongation = parameters["elongation"]
-    N_1 = parameters["N_1"]
-    N_2 = parameters["N_2"]
-    N_3 = parameters["N_3"]
+    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
     psi = magnetic_flux.psi_up_down_asymetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -93,7 +89,6 @@ def constraints_single_null(p, parameters):
         psi_x(1 - triangularity*epsilon, elongation*epsilon),
         psi_x(x_sep, y_sep),
         psi_y(x_sep, y_sep),
-
         psi_yy(1 + epsilon, 0) + N_1*psi_x(1 + epsilon, 0),
         psi_yy(1 - epsilon, 0) + N_2*psi_x(1 - epsilon, 0),
         psi_xx(1 - triangularity*epsilon, elongation*epsilon) +
@@ -118,9 +113,7 @@ def constraints_double_null(p, parameters):
     epsilon = parameters["epsilon"]
     triangularity = parameters["triangularity"]
     elongation = parameters["elongation"]
-    N_1 = parameters["N_1"]
-    N_2 = parameters["N_2"]
-    N_3 = parameters["N_3"]
+    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
     psi = magnetic_flux.psi_up_down_symmetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -144,25 +137,34 @@ def constraints_double_null(p, parameters):
         psi(x_sep, y_sep, p, A),
         psi_x(x_sep, y_sep),
         psi_y(x_sep, y_sep),
-
         psi_yy(1 + epsilon, 0) + N_1*psi_x(1 + epsilon, 0),
         psi_yy(1 - epsilon, 0) + N_2*psi_x(1 - epsilon, 0),
         ]
     return list_of_equations
 
 
-def compute_coefficients_c_i(params, psi, constraints, coefficient_number):
+def compute_coefficients_c_i(params, constraints, coefficient_number):
+    """calculates the coefficients c_i based on a set of constraints
+
+    Args:
+        params (dict): contains the plasma parameters
+        (epsilon, elongation, triangularity, A)
+        constraints (callable): list of equations
+        coefficient_number (int): number of constraints/coefficients
+         (7 if up-down symetrical, 12 if up-down asymetrical)
+
+    Returns:
+        list: coefficients c_i (floats)
+    """
     N_1, N_2, N_3 = parameters.compute_N_i(params)
-    params["N_1"] = N_1
-    params["N_2"] = N_2
-    params["N_3"] = N_3
+    params["N_1"], params["N_2"], params["N_3"] = N_1, N_2, N_3
     x_0 = np.zeros(coefficient_number) + 1
 
     coefficients = fsolve(constraints, x_0, args=(params))
     return coefficients
 
 
-def compute_psi(params, config="non-null"):
+def compute_psi(params, config="non-null", return_coeffs=False):
 
     if config == "non-null" or config == "double-null":
         psi = magnetic_flux.psi_up_down_symmetric
@@ -171,13 +173,17 @@ def compute_psi(params, config="non-null"):
         else:
             constraints_ = constraints_double_null
         coefficients = compute_coefficients_c_i(
-            params, psi=psi, constraints=constraints_, coefficient_number=7)
+            params, constraints=constraints_, coefficient_number=7)
     else:
         constraints_ = constraints_single_null
         psi = magnetic_flux.psi_up_down_asymetric
         coefficients = compute_coefficients_c_i(
-            params, psi=psi, constraints=constraints_, coefficient_number=12)
+            params, constraints=constraints_, coefficient_number=12)
 
     def new_psi(X, Y, pkg=np):
         return psi(X, Y, coefficients_c=coefficients, A=params["A"], pkg=pkg)
-    return new_psi
+
+    if return_coeffs:
+        return new_psi, coefficients
+    else:
+        return new_psi
