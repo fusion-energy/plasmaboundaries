@@ -10,7 +10,7 @@ def constraints(p, params):
     Args:
         p (list): coefficients c_i
         params (dict): contains the plasma params
-        (epsilon, elongation, triangularity, A)
+        (epsilon, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: list of constraints
@@ -56,7 +56,7 @@ def constraints_single_null(p, params):
     Args:
         p (list): coefficients c_i
         params (dict): contains the plasma params
-        (epsilon, elongation, triangularity, A)
+        (epsilon, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: list of constraints
@@ -107,7 +107,7 @@ def constraints_double_null(p, params):
     Args:
         p (list): coefficients c_i
         params (dict): contains the plasma params
-        (epsilon, elongation, triangularity, A)
+        (epsilon, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: list of constraints
@@ -147,6 +147,15 @@ def constraints_double_null(p, params):
 
 
 def compute_N_i(params):
+    """Computes the N_1 N_2 and N_3 coefficients based on plasma parameters
+
+    Args:
+        params (dict): contains the plasma params
+        (epsilon, elongation, triangularity, A)
+
+    Returns:
+        (float, float, float): (N_1, N_2, N_3)
+    """
     triangularity = params["triangularity"]
     epsilon = params["epsilon"]
     elongation = params["elongation"]
@@ -184,14 +193,14 @@ def compute_psi(params, config="non-null", return_coeffs=False):
     """Compute the magnetic flux fonction
 
     Args:
-        params (dict): contains the plasma params
+        params (dict): contains the plasma parameters
         config (str, optional): shape of the plasma
          "non-null", "single-null", "double-null". Defaults to "non-null".
         return_coeffs (bool, optional): If True, will also return the
          coefficients c_i. Defaults to False.
 
     Returns:
-        tuple: callable or callable, list. Magnetic flux fonction and
+        (callable) or (callable, list): Magnetic flux fonction and
          coefficients c_i (if return_coeffs is True)
     """
     if config == "non-null" or config == "double-null":
