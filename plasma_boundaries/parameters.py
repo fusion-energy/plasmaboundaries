@@ -1,17 +1,5 @@
 import numpy as np
 
-def compute_N_i(parameters):
-    triangularity = parameters["triangularity"]
-    epsilon = parameters["epsilon"]
-    elongation = parameters["elongation"]
-
-    alpha = np.arcsin(triangularity)  # alpha
-    N_1 = -(1 + alpha)/(epsilon*elongation**2)
-    N_2 = (1 - alpha)/(epsilon*elongation**2)
-    N_3 = -elongation/(epsilon*elongation*np.cos(alpha)**2)
-
-    return N_1, N_2, N_3
-
 
 ITER = {
     "epsilon": 0.32,  # a/R_0

@@ -2,25 +2,22 @@ import numpy as np
 import sympy as sp
 
 
-def derivatives(f, coefficients_c, A, order):
-    """Computes the derivatives of magnetic flux.
+def derivatives(f, order):
+    """Computes the derivatives of function.
     Does not computes xy or yx derivatives.
 
     Args:
-        f (callable f(x, y, coefficients_c, pkg)): function of magnetic flux
-        coefficients_c (list): coefficients ci
+        f (callable f(x, y, coefficients_c, pkg)): function
         order (int): order of differenciation
 
     Returns:
-        list: [x_derivative, y_derivative]
+        (sympy.Add, sympy.Add): (fx^order, fy^order)
     """
     x, y = sp.symbols("x y")
-    f_ = f(
-        X=x, Y=y, coefficients_c=coefficients_c,
-        A=A, pkg=sp)
-    f_x = sp.diff(f_, *[x for i in range(order)])
-    f_y = sp.diff(f_, *[y for i in range(order)])
-    return [f_x, f_y]
+    f_sp = f(x=x, y=y)
+    f_x = sp.diff(f_sp, *[x for i in range(order)])
+    f_y = sp.diff(f_sp, *[y for i in range(order)])
+    return f_x, f_y
 
 
 def psi_up_down_symmetric(X, Y, coefficients_c, A, pkg=np):
