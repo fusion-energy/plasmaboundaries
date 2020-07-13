@@ -49,7 +49,7 @@ def psi_up_down_symmetric(X, Y, coefficients_c, A, pkg=np):
     return val
 
 
-def psi_up_down_asymetric(X, Y, coefficients_c, A, pkg=np):
+def psi_up_down_asymmetric(X, Y, coefficients_c, A, pkg=np):
     """returns the value of magnetic flux at point (X, Y)
      according to coefficients ci
 
