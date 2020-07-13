@@ -1,3 +1,3 @@
-from . import magnetic_flux
-from . import model
-from . import parameters
+from .model import *
+from .parameters import *
+from .magnetic_flux import *
