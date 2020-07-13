@@ -2,6 +2,7 @@ from . import magnetic_flux
 
 import numpy as np
 from scipy.optimize import fsolve
+import sympy as sp
 
 
 def val_from_sp(expression):
@@ -26,9 +27,11 @@ def constraints(p, params):
     triangularity = params["triangularity"]
     elongation = params["elongation"]
     N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
-    psi = magnetic_flux.psi_up_down_symmetric
-    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
-    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
+
+    def psi(x, y):
+        return magnetic_flux.psi_up_down_symmetric(x, y, p, A, pkg=sp)
+    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, 2)
 
     psi_x = val_from_sp(psi_x_sp)
     psi_y = val_from_sp(psi_y_sp)
@@ -36,9 +39,9 @@ def constraints(p, params):
     psi_yy = val_from_sp(psi_yy_sp)
 
     list_of_equations = [
-        psi(1 + epsilon, 0, p, A),
-        psi(1 - epsilon, 0, p, A),
-        psi(1 - triangularity*epsilon, elongation*epsilon, p, A),
+        psi(1 + epsilon, 0),
+        psi(1 - epsilon, 0),
+        psi(1 - triangularity*epsilon, elongation*epsilon),
         psi_x(1 - triangularity*epsilon, elongation*epsilon),
         psi_yy(1 + epsilon, 0) + N_1*psi_x(1 + epsilon, 0),
         psi_yy(1 - epsilon, 0) + N_2*psi_x(1 - epsilon, 0),
@@ -65,20 +68,23 @@ def constraints_single_null(p, params):
     triangularity = params["triangularity"]
     elongation = params["elongation"]
     N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
-    psi = magnetic_flux.psi_up_down_asymetric
-    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
-    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
+
+    def psi(x, y):
+        return magnetic_flux.psi_up_down_asymetric(x, y, p, A, pkg=sp)
+    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, 2)
 
     psi_x = val_from_sp(psi_x_sp)
     psi_y = val_from_sp(psi_y_sp)
     psi_xx = val_from_sp(psi_xx_sp)
     psi_yy = val_from_sp(psi_yy_sp)
+
     x_sep, y_sep = 1-1.1*triangularity*epsilon, -1.1*elongation*epsilon
     list_of_equations = [
-        psi(1 + epsilon, 0, p, A),
-        psi(1 - epsilon, 0, p, A),
-        psi(1 - triangularity*epsilon, elongation*epsilon, p, A),
-        psi(x_sep, y_sep, p, A),
+        psi(1 + epsilon, 0),
+        psi(1 - epsilon, 0),
+        psi(1 - triangularity*epsilon, elongation*epsilon),
+        psi(x_sep, y_sep),
         psi_y(1 + epsilon, 0),
         psi_y(1 - epsilon, 0),
         psi_x(1 - triangularity*epsilon, elongation*epsilon),
@@ -109,9 +115,11 @@ def constraints_double_null(p, params):
     triangularity = params["triangularity"]
     elongation = params["elongation"]
     N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
-    psi = magnetic_flux.psi_up_down_symmetric
-    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
-    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
+
+    def psi(x, y):
+        return magnetic_flux.psi_up_down_symmetric(x, y, p, A, pkg=sp)
+    psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, 2)
 
     psi_x = val_from_sp(psi_x_sp)
     psi_y = val_from_sp(psi_y_sp)
@@ -119,10 +127,11 @@ def constraints_double_null(p, params):
     psi_yy = val_from_sp(psi_yy_sp)
 
     x_sep, y_sep = 1-1.1*triangularity*epsilon, 1.1*elongation*epsilon
+
     list_of_equations = [
-        psi(1 + epsilon, 0, p, A),
-        psi(1 - epsilon, 0, p, A),
-        psi(x_sep, y_sep, p, A),
+        psi(1 + epsilon, 0),
+        psi(1 - epsilon, 0),
+        psi(x_sep, y_sep),
         psi_x(x_sep, y_sep),
         psi_y(x_sep, y_sep),
         psi_yy(1 + epsilon, 0) + N_1*psi_x(1 + epsilon, 0),
