@@ -1,24 +1,26 @@
 from . import magnetic_flux
-from . import parameters
+from .parameters import compute_N_i
 
 import numpy as np
 from scipy.optimize import fsolve
 
 
-def constraints(p, parameters):
+def constraints(p, params):
     """Creates all the constraints for numerical solving
 
     Args:
         p (list): coefficients c_i
+        params (dict): contains the plasma params
+        (epsilon, elongation, triangularity, A)
 
     Returns:
         list: list of constraints
     """
-    A = parameters["A"]
-    epsilon = parameters["epsilon"]
-    triangularity = parameters["triangularity"]
-    elongation = parameters["elongation"]
-    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
+    A = params["A"]
+    epsilon = params["epsilon"]
+    triangularity = params["triangularity"]
+    elongation = params["elongation"]
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
     psi = magnetic_flux.psi_up_down_symmetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -48,21 +50,23 @@ def constraints(p, parameters):
     return list_of_equations
 
 
-def constraints_single_null(p, parameters):
+def constraints_single_null(p, params):
     """Creates all the constraints for numerical solving in
      the case of a double null divertor configuration
 
     Args:
         p (list): coefficients c_i
+        params (dict): contains the plasma params
+        (epsilon, elongation, triangularity, A)
 
     Returns:
         list: list of constraints
     """
-    A = parameters["A"]
-    epsilon = parameters["epsilon"]
-    triangularity = parameters["triangularity"]
-    elongation = parameters["elongation"]
-    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
+    A = params["A"]
+    epsilon = params["epsilon"]
+    triangularity = params["triangularity"]
+    elongation = params["elongation"]
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
     psi = magnetic_flux.psi_up_down_asymetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -97,23 +101,23 @@ def constraints_single_null(p, parameters):
     return list_of_equations
 
 
-def constraints_double_null(p, parameters):
+def constraints_double_null(p, params):
     """Creates all the constraints for numerical solving in
      the case of a double null divertor configuration
 
     Args:
         p (list): coefficients c_i
-        psi (callable): function phi to use
-        parameters (dict): contains parameters
+        params (dict): contains the plasma params
+        (epsilon, elongation, triangularity, A)
 
     Returns:
         list: list of constraints
     """
-    A = parameters["A"]
-    epsilon = parameters["epsilon"]
-    triangularity = parameters["triangularity"]
-    elongation = parameters["elongation"]
-    N_1, N_2, N_3 = parameters["N_1"], parameters["N_2"], parameters["N_3"]
+    A = params["A"]
+    epsilon = params["epsilon"]
+    triangularity = params["triangularity"]
+    elongation = params["elongation"]
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
     psi = magnetic_flux.psi_up_down_symmetric
     psi_x_sp, psi_y_sp = magnetic_flux.derivatives(psi, p, A, 1)
     psi_xx_sp, psi_yy_sp = magnetic_flux.derivatives(psi, p, A, 2)
@@ -147,7 +151,7 @@ def compute_coefficients_c_i(params, constraints, coefficient_number):
     """calculates the coefficients c_i based on a set of constraints
 
     Args:
-        params (dict): contains the plasma parameters
+        params (dict): contains the plasma params
         (epsilon, elongation, triangularity, A)
         constraints (callable): list of equations
         coefficient_number (int): number of constraints/coefficients
@@ -156,7 +160,7 @@ def compute_coefficients_c_i(params, constraints, coefficient_number):
     Returns:
         list: coefficients c_i (floats)
     """
-    N_1, N_2, N_3 = parameters.compute_N_i(params)
+    N_1, N_2, N_3 = compute_N_i(params)
     params["N_1"], params["N_2"], params["N_3"] = N_1, N_2, N_3
     x_0 = np.zeros(coefficient_number) + 1
 
@@ -165,7 +169,19 @@ def compute_coefficients_c_i(params, constraints, coefficient_number):
 
 
 def compute_psi(params, config="non-null", return_coeffs=False):
+    """Compute the magnetic flux fonction
 
+    Args:
+        params (dict): contains the plasma params
+        config (str, optional): shape of the plasma
+         "non-null", "single-null", "double-null". Defaults to "non-null".
+        return_coeffs (bool, optional): If True, will also return the
+         coefficients c_i. Defaults to False.
+
+    Returns:
+        tuple: callable or callable, list. Magnetic flux fonction and
+         coefficients c_i (if return_coeffs is True)
+    """
     if config == "non-null" or config == "double-null":
         psi = magnetic_flux.psi_up_down_symmetric
         if config == "non-null":
@@ -181,7 +197,8 @@ def compute_psi(params, config="non-null", return_coeffs=False):
             params, constraints=constraints_, coefficient_number=12)
 
     def new_psi(X, Y, pkg=np):
-        return psi(X, Y, coefficients_c=coefficients, A=params["A"], pkg=pkg)
+        return psi(
+            X, Y, coefficients_c=coefficients, A=params["A"], pkg=pkg)
 
     if return_coeffs:
         return new_psi, coefficients
