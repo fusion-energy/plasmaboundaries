@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from plasma_boundaries import parameters, model
 
-import numpy as np
 
 # plasma parameters
 params = parameters.ITER
