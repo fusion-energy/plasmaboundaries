@@ -6,8 +6,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from plasma_boundaries import parameters, model
-
+from plasma_boundaries import parameters, compute_psi
 
 # plasma parameters
 params = parameters.ITER
@@ -15,7 +14,7 @@ params = parameters.ITER
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=True, figsize=(10, 4.8))
 for ax, config in zip([ax1, ax2, ax3], ["non-null", "single-null", "double-null"]):
     # compute psi
-    psi = model.compute_psi(params, config=config)
+    psi = compute_psi(params, config=config)
 
     # plot the results
     xmin, xmax = 0.6, 1.35
