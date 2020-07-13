@@ -1,2 +1,0 @@
-import sympy as sp
-
