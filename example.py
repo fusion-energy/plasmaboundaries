@@ -6,19 +6,20 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from plasma_boundaries import parameters, model
-
-import numpy as np
+from plasma_boundaries import ITER, compute_psi
 
 # plasma parameters
-params = parameters.ITER
+params = ITER
 
 
 # compute psi
-psi = model.compute_psi(params, config="double-null")
+psi = compute_psi(params, config="double-null")
 
 # plot the results
-xmin, xmax = 0, 2
+import matplotlib.pyplot as plt
+import numpy as np
+
+xmin, xmax = 0.001, 2
 ymin, ymax = -2, 2
 step = 0.01
 x = np.arange(xmin, xmax, step=step)
