@@ -1,5 +1,5 @@
-import magnetic_flux
-import parameters
+from . import magnetic_flux
+from . import parameters
 
 import numpy as np
 from scipy.optimize import fsolve

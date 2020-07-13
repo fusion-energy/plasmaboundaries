@@ -6,17 +6,15 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import model
-import parameters
+from plasma_boundaries import parameters, model
 
 import numpy as np
 
-# Plasma parameters
+# plasma parameters
 params = parameters.ITER
 
 
 # compute psi
-
 psi = model.compute_psi(params, config="double-null")
 
 # plot the results
@@ -31,7 +29,6 @@ Z = psi(X, Y)  # compute magnetic flux
 
 plt.figure()
 
-# levels = np.linspace(-0.15, 0.15, num=15)
 CS = plt.contourf(X, Y, Z, levels=15)
 plt.contour(X, Y, Z, levels=[0], colors="white")
 plt.colorbar(CS, label="Magnetic flux $\Psi$")
