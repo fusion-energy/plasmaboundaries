@@ -52,6 +52,9 @@ plt.show()
 ```
 In `compute_psi`, the argument `config` can also be set to `'single-null'` or `'non-null'` for other plasma shapes.
 
+<img src="https://user-images.githubusercontent.com/40028739/87403291-f8fbda80-c5bc-11ea-971e-7856043855de.png">
+<img src="https://user-images.githubusercontent.com/40028739/87404184-1c735500-c5be-11ea-93a3-16ed588bf3c6.png">
+
 ### Custom plasma parameters
 Parameters can also be defined by creating the parameters dictionary:
 ```python
@@ -62,4 +65,4 @@ params = {
     "triangularity": 0.33,
 }
 ```
-<img src="https://user-images.githubusercontent.com/40028739/87342222-31fb6700-c54b-11ea-87ab-ac2f57f7b113.png">
+
