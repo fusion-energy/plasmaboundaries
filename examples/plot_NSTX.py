@@ -9,10 +9,10 @@ import matplotlib.colors as mcolors
 
 
 import numpy as np
-import plasma_boundaries
+import plasmaboundaries
 
 # plasma parameters
-params = [plasma_boundaries.NSTX_single_null, plasma_boundaries.NSTX_double_null]
+params = [plasmaboundaries.NSTX_single_null, plasmaboundaries.NSTX_double_null]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10, 4.8))
 
@@ -23,7 +23,7 @@ for ax, config, param in zip(
         params):
 
     # compute psi
-    psi = plasma_boundaries.compute_psi(param, config=config)
+    psi = plasmaboundaries.compute_psi(param, config=config)
 
     # plot the results
     xmin, xmax = 0.1, 2
