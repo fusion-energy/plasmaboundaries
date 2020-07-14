@@ -1,8 +1,8 @@
 import setuptools
 
 setuptools.setup(
-    name="plasma_boundaries",
-    version="0.0.1",
+    name="plasmaboundaries",
+    version="0.0.2",
     author="Remi Delaporte-Mathurin",
     author_email="rdelaportemathurin@gmail.com",
     description="Determine plasma flux functions for various plasma parameters and plasma configurations",
