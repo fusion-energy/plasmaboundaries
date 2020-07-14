@@ -21,7 +21,7 @@ import plasma_boundaries
 # plasma parameters
 params = plasma_boundaries.ITER
 
-# compute magnetic flux psi(x, y)
+# compute magnetic flux psi(R, z)
 psi = plasma_boundaries.compute_psi(params, config='double-null')
 ```
 
@@ -33,20 +33,20 @@ print(psi(1.0, 0))
 import matplotlib.pyplot as plt
 import numpy as np
 
-xmin, xmax = 0.6, 1.4
-ymin, ymax = -0.6, 0.6
-x = np.arange(xmin, xmax, step=0.01)
-y = np.arange(ymin, ymax, step=0.01)
-X, Y = np.meshgrid(x, y)
-Z = psi(X, Y)  # compute magnetic flux
+rmin, rmax = 0.6, 1.4
+zmin, zmax = -0.6, 0.6
+r = np.arange(rmin, rmax, step=0.01)
+z = np.arange(zmin, zmax, step=0.01)
+R, Z = np.meshgrid(r, z)
+PSI = psi(R, Z)  # compute magnetic flux
 
-levels = np.linspace(Z.min(), 0, num=25)
-CS = plt.contourf(X, Y, Z, levels=levels, vmax=0)
-plt.contour(X, Y, Z, levels=[0], colors="black") # display the separatrix
+levels = np.linspace(PSI.min(), 0, num=25)
+CS = plt.contourf(R, Z, PSI, levels=levels, vmax=0)
+plt.contour(R, Z, PSI, levels=[0], colors="black") # display the separatrix
 
 plt.colorbar(CS, label="Magnetic flux $\Psi$")
 plt.xlabel('Radius $R/R_0$')
-plt.ylabel('Height $Z/R_0$')
+plt.ylabel('Height $z/R_0$')
 plt.gca().set_aspect("equal")
 plt.show()
 ```
