@@ -9,7 +9,7 @@ import matplotlib.colors as mcolors
 
 
 import numpy as np
-import plasma_boundaries
+import plasmaboundaries
 
 # plasma parameters
 params = plasma_boundaries.ITER
