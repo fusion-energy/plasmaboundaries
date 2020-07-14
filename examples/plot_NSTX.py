@@ -12,20 +12,22 @@ import numpy as np
 import plasma_boundaries
 
 # plasma parameters
-params = plasma_boundaries.ITER
+params = [plasma_boundaries.NSTX_single_null, plasma_boundaries.NSTX_double_null]
 
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=True, figsize=(10, 4.8))
+fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(10, 4.8))
 
 
-for ax, config in zip(
-    [ax1, ax2, ax3],
-    ["non-null", "single-null", "double-null"]):
+for ax, config, param in zip(
+        [ax1, ax2],
+        ["single-null", "double-null"],
+        params):
+
     # compute psi
-    psi = plasma_boundaries.compute_psi(params, config=config)
+    psi = plasma_boundaries.compute_psi(param, config=config)
 
     # plot the results
-    xmin, xmax = 0.6, 1.35
-    ymin, ymax = -0.8, 0.7
+    xmin, xmax = 0.1, 2
+    ymin, ymax = -2, 2
     x = np.arange(xmin, xmax, step=0.01)
     y = np.arange(ymin, ymax, step=0.01)
 
@@ -50,7 +52,7 @@ for ax, config in zip(
         X, Y, Z, levels=[0], colors="black", linestyles="dashed")
     ax.clabel(separatrix, inline=True, fmt=r"$\Psi = $%.0f")
 
-    ax.set_title('ITER ' + config)
+    ax.set_title('NSTX ' + config)
     ax.set_xlabel('Radius $R/R_0$')
     ax.set_aspect("equal")
 ax1.set_ylabel('Height $Z/R_0$')
