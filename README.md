@@ -18,13 +18,13 @@ Install the dependencies
 First compute the magnetic flux <img src="https://render.githubusercontent.com/render/math?math=\Psi"> from plasma-boundaries based on a specific set of parameters.
 In this example, the built-in ITER plasma parameters will be used:
 ```python
-import plasma_boundaries
+import plasmaboundaries
 
 # plasma parameters
-params = plasma_boundaries.ITER
+params = plasmaboundaries.ITER
 
 # compute magnetic flux psi(R, z)
-psi = plasma_boundaries.compute_psi(params, config='double-null')
+psi = plasmaboundaries.compute_psi(params, config='double-null')
 ```
 
 The magnetic flux can now be calculated for any coordinates and ploted with matplotlib:
