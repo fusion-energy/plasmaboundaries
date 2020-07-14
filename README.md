@@ -68,3 +68,7 @@ params = {
 }
 ```
 
+## Run the tests
+
+You can run the tests with:
+```pytest tests/```
