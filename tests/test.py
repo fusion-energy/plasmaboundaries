@@ -1,4 +1,4 @@
-import plasma_boundaries
+import plasmaboundaries
 
 import sympy as sp
 import numpy as np
@@ -29,12 +29,12 @@ def test_non_null():
     A = -0.05
     params = {
         "A": A,
-        "epsilon": 0.3,
+        "aspect_ratio": 0.3,
         "triangularity": 0.7,
         "elongation": 2
     }
     config = "non-null"
-    psi = plasma_boundaries.compute_psi(params, config=config)
+    psi = plasmaboundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 
@@ -57,12 +57,12 @@ def test_single_null():
     A = 0
     params = {
         "A": A,
-        "epsilon": 0.3,
+        "aspect_ratio": 0.3,
         "triangularity": 0.7,
         "elongation": 2
     }
     config = "single-null"
-    psi = plasma_boundaries.compute_psi(params, config=config)
+    psi = plasmaboundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 
@@ -86,12 +86,12 @@ def test_double_null():
     A = 0
     params = {
         "A": A,
-        "epsilon": 0.3,
+        "aspect_ratio": 0.3,
         "triangularity": 0.7,
         "elongation": 2
     }
     config = "double-null"
-    psi = plasma_boundaries.compute_psi(params, config=config)
+    psi = plasmaboundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 
