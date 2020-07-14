@@ -15,7 +15,7 @@ def val_from_sp(expression):
 def constraints(p, params, config):
 
     A = params["A"]
-    epsilon = params["epsilon"]
+    aspect_ratio = params["aspect_ratio"]
     triangularity = params["triangularity"]
     elongation = params["elongation"]
     N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
@@ -35,7 +35,7 @@ def constraints(p, params, config):
     psi_xx = val_from_sp(psi_xx_sp)
     psi_yy = val_from_sp(psi_yy_sp)
 
-    arguments = [psi, (psi_x, psi_y), (psi_xx, psi_yy), A, epsilon, triangularity, elongation, (N_1, N_2, N_3)]
+    arguments = [psi, (psi_x, psi_y), (psi_xx, psi_yy), A, aspect_ratio, triangularity, elongation, (N_1, N_2, N_3)]
     if config == "non-null":
         list_of_equations = constraints_non_null(*arguments)
     elif config == "single-null":
@@ -46,7 +46,7 @@ def constraints(p, params, config):
 
 
 def constraints_non_null(
-        f, first_order_d, second_order_d, A, epsilon,
+        f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
 
     fx, fy = first_order_d
@@ -54,62 +54,62 @@ def constraints_non_null(
     N_1, N_2, N_3 = N_coeffs
 
     list_of_equations = [
-        f(1 + epsilon, 0),
-        f(1 - epsilon, 0),
-        f(1 - triangularity*epsilon, elongation*epsilon),
-        fx(1 - triangularity*epsilon, elongation*epsilon),
-        fyy(1 + epsilon, 0) + N_1*fx(1 + epsilon, 0),
-        fyy(1 - epsilon, 0) + N_2*fx(1 - epsilon, 0),
-        fxx(1 - triangularity*epsilon, elongation*epsilon) +
-        N_3*fy(1 - triangularity*epsilon, elongation*epsilon)
+        f(1 + aspect_ratio, 0),
+        f(1 - aspect_ratio, 0),
+        f(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
+        fx(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
+        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
+        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
+        fxx(1 - triangularity*aspect_ratio, elongation*aspect_ratio) +
+        N_3*fy(1 - triangularity*aspect_ratio, elongation*aspect_ratio)
         ]
     return list_of_equations
 
 
 def constraints_single_null(
-        f, first_order_d, second_order_d, A, epsilon,
+        f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
 
     fx, fy = first_order_d
     fxx, fyy = second_order_d
     N_1, N_2, N_3 = N_coeffs
 
-    x_sep, y_sep = 1-1.1*triangularity*epsilon, -1.1*elongation*epsilon
+    x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, -1.1*elongation*aspect_ratio
     list_of_equations = [
-        f(1 + epsilon, 0),
-        f(1 - epsilon, 0),
-        f(1 - triangularity*epsilon, elongation*epsilon),
+        f(1 + aspect_ratio, 0),
+        f(1 - aspect_ratio, 0),
+        f(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
         f(x_sep, y_sep),
-        fy(1 + epsilon, 0),
-        fy(1 - epsilon, 0),
-        fx(1 - triangularity*epsilon, elongation*epsilon),
+        fy(1 + aspect_ratio, 0),
+        fy(1 - aspect_ratio, 0),
+        fx(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
         fx(x_sep, y_sep),
         fy(x_sep, y_sep),
-        fyy(1 + epsilon, 0) + N_1*fx(1 + epsilon, 0),
-        fyy(1 - epsilon, 0) + N_2*fx(1 - epsilon, 0),
-        fxx(1 - triangularity*epsilon, elongation*epsilon) +
-        N_3*fy(1 - triangularity*epsilon, elongation*epsilon),
+        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
+        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
+        fxx(1 - triangularity*aspect_ratio, elongation*aspect_ratio) +
+        N_3*fy(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
         ]
     return list_of_equations
 
 
 def constraints_double_null(
-        f, first_order_d, second_order_d, A, epsilon,
+        f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
 
     fx, fy = first_order_d
     fxx, fyy = second_order_d
     N_1, N_2, N_3 = N_coeffs
 
-    x_sep, y_sep = 1-1.1*triangularity*epsilon, 1.1*elongation*epsilon
+    x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, 1.1*elongation*aspect_ratio
     list_of_equations = [
-        f(1 + epsilon, 0),
-        f(1 - epsilon, 0),
+        f(1 + aspect_ratio, 0),
+        f(1 - aspect_ratio, 0),
         f(x_sep, y_sep),
         fx(x_sep, y_sep),
         fy(x_sep, y_sep),
-        fyy(1 + epsilon, 0) + N_1*fx(1 + epsilon, 0),
-        fyy(1 - epsilon, 0) + N_2*fx(1 - epsilon, 0),
+        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
+        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
         ]
     return list_of_equations
 
@@ -119,19 +119,19 @@ def compute_N_i(params):
 
     Args:
         params (dict): contains the plasma params
-        (epsilon, elongation, triangularity, A)
+        (aspect_ratio, elongation, triangularity, A)
 
     Returns:
         (float, float, float): (N_1, N_2, N_3)
     """
     triangularity = params["triangularity"]
-    epsilon = params["epsilon"]
+    aspect_ratio = params["aspect_ratio"]
     elongation = params["elongation"]
 
     alpha = np.arcsin(triangularity)  # alpha
-    N_1 = -(1 + alpha)/(epsilon*elongation**2)
-    N_2 = (1 - alpha)/(epsilon*elongation**2)
-    N_3 = -elongation/(epsilon*elongation*np.cos(alpha)**2)
+    N_1 = -(1 + alpha)/(aspect_ratio*elongation**2)
+    N_2 = (1 - alpha)/(aspect_ratio*elongation**2)
+    N_3 = -elongation/(aspect_ratio*elongation*np.cos(alpha)**2)
 
     return N_1, N_2, N_3
 
@@ -141,7 +141,7 @@ def compute_coefficients_c_i(params, constraints, config):
 
     Args:
         params (dict): contains the plasma params
-        (epsilon, elongation, triangularity, A)
+        (aspect_ratio, elongation, triangularity, A)
         constraints (callable): list of equations
         coefficient_number (int): number of constraints/coefficients
          (7 if up-down symetrical, 12 if up-down asymmetrical)

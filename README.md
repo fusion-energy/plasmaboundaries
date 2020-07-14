@@ -4,8 +4,10 @@ This code computes and plots analytical solutions of the Grad-Shafranov (GS) equ
 Details on the method can be found in [*"One size fits all" analytical solutions to the Grad-Shafranov equation*, Physics of Plasmas 17 (2010)](https://doi.org/10.1063/1.3328818)
 
 ## Installation
+You can install plasma-boundaries using [Pip](https://pip.pypa.io/en/stable/) by running:
+```pip install plasmaboundaries```
 
-First clone this repository
+Alternatively you can clone the repository:
 ```git clone https://github.com/RemiTheWarrior/plasma-boundaries```
 
 Install the dependencies
@@ -21,7 +23,7 @@ import plasma_boundaries
 # plasma parameters
 params = plasma_boundaries.ITER
 
-# compute magnetic flux psi(x, y)
+# compute magnetic flux psi(R, z)
 psi = plasma_boundaries.compute_psi(params, config='double-null')
 ```
 
@@ -33,20 +35,20 @@ print(psi(1.0, 0))
 import matplotlib.pyplot as plt
 import numpy as np
 
-xmin, xmax = 0.6, 1.4
-ymin, ymax = -0.6, 0.6
-x = np.arange(xmin, xmax, step=0.01)
-y = np.arange(ymin, ymax, step=0.01)
-X, Y = np.meshgrid(x, y)
-Z = psi(X, Y)  # compute magnetic flux
+rmin, rmax = 0.6, 1.4
+zmin, zmax = -0.6, 0.6
+r = np.arange(rmin, rmax, step=0.01)
+z = np.arange(zmin, zmax, step=0.01)
+R, Z = np.meshgrid(r, z)
+PSI = psi(R, Z)  # compute magnetic flux
 
-levels = np.linspace(Z.min(), 0, num=25)
-CS = plt.contourf(X, Y, Z, levels=levels, vmax=0)
-plt.contour(X, Y, Z, levels=[0], colors="black") # display the separatrix
+levels = np.linspace(PSI.min(), 0, num=25)
+CS = plt.contourf(R, Z, PSI, levels=levels, vmax=0)
+plt.contour(R, Z, PSI, levels=[0], colors="black") # display the separatrix
 
 plt.colorbar(CS, label="Magnetic flux $\Psi$")
 plt.xlabel('Radius $R/R_0$')
-plt.ylabel('Height $Z/R_0$')
+plt.ylabel('Height $z/R_0$')
 plt.gca().set_aspect("equal")
 plt.show()
 ```
@@ -60,9 +62,13 @@ Parameters can also be defined by creating the parameters dictionary:
 ```python
 params = {
     "A": -0.155,
-    "epsilon": 0.32,
+    "aspect_ratio": 0.32,
     "elongation": 1.7,
     "triangularity": 0.33,
 }
 ```
 
+## Run the tests
+
+You can run the tests with:
+```pytest tests/```
