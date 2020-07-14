@@ -1,4 +1,4 @@
-from plasma_boundaries.magnetic_flux import psi_up_down_symmetric, \
+from plasmaboundaries.magnetic_flux import psi_up_down_symmetric, \
     psi_up_down_asymmetric, derivatives
 
 import numpy as np
