@@ -60,7 +60,7 @@ Parameters can also be defined by creating the parameters dictionary:
 ```python
 params = {
     "A": -0.155,
-    "epsilon": 0.32,
+    "aspect_ratio": 0.32,
     "elongation": 1.7,
     "triangularity": 0.33,
 }
