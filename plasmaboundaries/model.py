@@ -238,7 +238,7 @@ def compute_coefficients_c_i(params, constraints, config):
     N_1, N_2, N_3 = compute_N_i(params)
     params["N_1"], params["N_2"], params["N_3"] = N_1, N_2, N_3
 
-    if config == "non-null" or config == "double-null":
+    if config in ["non-null", "double-null"]:
         coefficient_number = 7
     elif config == "single-null":
         coefficient_number = 12
