@@ -38,8 +38,7 @@ def test_non_null():
 
     x, y = sp.symbols("x y")
 
-    psi_sp = psi(x, y, pkg=sp)
-
+    psi_sp = psi(x, y, pkg='sympy')
     x_min, x_max = 0.001, 2
     y_min, y_max = -2, 2
 
@@ -66,7 +65,7 @@ def test_single_null():
 
     x, y = sp.symbols("x y")
 
-    psi_sp = psi(x, y, pkg=sp)
+    psi_sp = psi(x, y, pkg='sympy')
 
     x_min, x_max = 0.001, 2
     y_min, y_max = -2, 2
@@ -95,7 +94,7 @@ def test_double_null():
 
     x, y = sp.symbols("x y")
 
-    psi_sp = psi(x, y, pkg=sp)
+    psi_sp = psi(x, y, pkg='sympy')
 
     x_min, x_max = 0.001, 2
     y_min, y_max = -2, 2
