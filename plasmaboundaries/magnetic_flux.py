@@ -20,14 +20,14 @@ def derivatives(f, order):
     return f_x, f_y
 
 
-def psi_up_down_symmetric(X, Y, coefficients_c, A, pkg=np):
+def psi_up_down_symmetric(X, Y, c_i, A, pkg=np):
     """returns the value of magnetic flux at point (X, Y)
-     according to coefficients ci
+    according to coefficients ci
 
     Args:
         X (float or numpy.array): x coordinate
         Y (float or numpy.array): y coordinate
-        coefficients_c (list): list of floats, the ci coefficients
+        c_i (list): list of floats, the ci coefficients
         pkg (callable, optional): if set to np (resp. sp), numpy (resp. sympy)
          objects will be used. Defaults to np.
 
@@ -45,18 +45,18 @@ def psi_up_down_symmetric(X, Y, coefficients_c, A, pkg=np):
 
     psis = [psi_1, psi_2, psi_3, psi_4, psi_5, psi_6, psi_7]
     val = X**4/8 + A*(1/2*X**2*pkg.log(X) - X**4/8) + \
-        sum([coefficients_c[i]*psis[i] for i in range(len(coefficients_c))])
+        sum([c_i[i]*psis[i] for i in range(len(c_i))])
     return val
 
 
-def psi_up_down_asymmetric(X, Y, coefficients_c, A, pkg=np):
+def psi_up_down_asymmetric(X, Y, c_i, A, pkg=np):
     """returns the value of magnetic flux at point (X, Y)
-     according to coefficients ci
+    according to coefficients ci
 
     Args:
         X (float or numpy.array): x coordinate
         Y (float or numpy.array): y coordinate
-        coefficients_c (list): list of floats, the ci coefficients
+        c_i (list): list of floats, the ci coefficients
         pkg (callable, optional): if set to np (resp. sp), numpy (resp. sympy)
          objects will be used. Defaults to np.
 
@@ -84,5 +84,5 @@ def psi_up_down_asymmetric(X, Y, coefficients_c, A, pkg=np):
         psi_10, psi_11, psi_12]
 
     val = X**4/8 + A*(1/2*X**2*pkg.log(X) - X**4/8) + \
-        sum([coefficients_c[i]*psis[i] for i in range(len(coefficients_c))])
+        sum([c_i[i]*psis[i] for i in range(len(c_i))])
     return val

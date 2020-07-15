@@ -187,7 +187,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
 
     def new_psi(X, Y, pkg=np):
         return psi(
-            X, Y, coefficients_c=coefficients, A=params["A"], pkg=pkg)
+            X, Y, c_i=coefficients, A=params["A"], pkg=pkg)
 
     if return_coeffs:
         return new_psi, coefficients
