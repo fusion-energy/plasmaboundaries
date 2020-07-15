@@ -33,11 +33,6 @@ def constraints(p, params, config):
     Returns:
         list: set of constraints
     """
-    A = params["A"]
-    aspect_ratio = params["aspect_ratio"]
-    triangularity = params["triangularity"]
-    elongation = params["elongation"]
-    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
 
     if config == "non-null" or config == "double-null":
         psi_ = psi_up_down_symmetric
@@ -45,7 +40,7 @@ def constraints(p, params, config):
         psi_ = psi_up_down_asymmetric
 
     def psi(x, y):
-        return psi_(x, y, p, A, pkg='sp')
+        return psi_(x, y, p, params["A"], pkg='sp')
     psi_x_sp, psi_y_sp = derivatives(psi, 1)
     psi_xx_sp, psi_yy_sp = derivatives(psi, 2)
 
@@ -54,7 +49,7 @@ def constraints(p, params, config):
     psi_xx = val_from_sp(psi_xx_sp)
     psi_yy = val_from_sp(psi_yy_sp)
 
-    arguments = [psi, (psi_x, psi_y), (psi_xx, psi_yy), A, aspect_ratio, triangularity, elongation, (N_1, N_2, N_3)]
+    arguments = [psi, (psi_x, psi_y), (psi_xx, psi_yy), params]
     if config == "non-null":
         list_of_equations = constraints_non_null(*arguments)
     elif config == "single-null":
@@ -65,8 +60,7 @@ def constraints(p, params, config):
 
 
 def constraints_non_null(
-        f, first_order_d, second_order_d, A, aspect_ratio,
-        triangularity, elongation, N_coeffs):
+        f, first_order_d, second_order_d, params):
     """Creates set of constraints for parametric GS solution non-null
     plasma configuration.
 
@@ -76,36 +70,38 @@ def constraints_non_null(
             function f
         second_order_d ((callable, callable)): second order derivatives of the
         function f: (d^2/dy^2(f), d^2/dx^2(f))
-        A (float): Plasma parameter
-        aspect_ratio (float): Plasma parameter
-        triangularity (float): Plasma parameter
-        elongation (float): Plasma parameter
-        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
-            plasma parameters
+        params (dict): contains the plasma parameters
+            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: set of constraints
     """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
-    N_1, N_2, N_3 = N_coeffs
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
+    aspect_ratio = params["aspect_ratio"]
+    triangularity = params["aspect_ratio"]
+    elongation = params["elongation"]
+
+    outer_equatorial_point = (1 + aspect_ratio, 0)
+    inner_equatorial_point = (1 - aspect_ratio, 0)
+    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
 
     list_of_equations = [
-        f(1 + aspect_ratio, 0),
-        f(1 - aspect_ratio, 0),
-        f(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
-        fx(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
-        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
-        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
-        fxx(1 - triangularity*aspect_ratio, elongation*aspect_ratio) +
-        N_3*fy(1 - triangularity*aspect_ratio, elongation*aspect_ratio)
+        f(*outer_equatorial_point),
+        f(*inner_equatorial_point),
+        f(*high_point),
+        fx(*high_point),
+        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
+        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
+        fxx(*high_point) +
+        N_3*fy(*high_point)
         ]
     return list_of_equations
 
 
 def constraints_single_null(
-        f, first_order_d, second_order_d, A, aspect_ratio,
-        triangularity, elongation, N_coeffs):
+        f, first_order_d, second_order_d, params):
     """Creates set of constraints for parametric GS solution single-null
     plasma configuration.
 
@@ -115,42 +111,43 @@ def constraints_single_null(
             function f
         second_order_d ((callable, callable)): second order derivatives of the
         function f: (d^2/dy^2(f), d^2/dx^2(f))
-        A (float): Plasma parameter
-        aspect_ratio (float): Plasma parameter
-        triangularity (float): Plasma parameter
-        elongation (float): Plasma parameter
-        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
-            plasma parameters
+        params (dict): contains the plasma parameters
+            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: set of constraints
     """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
-    N_1, N_2, N_3 = N_coeffs
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
+    aspect_ratio = params["aspect_ratio"]
+    triangularity = params["aspect_ratio"]
+    elongation = params["elongation"]
 
+    outer_equatorial_point = (1 + aspect_ratio, 0)
+    inner_equatorial_point = (1 - aspect_ratio, 0)
+    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
     x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, -1.1*elongation*aspect_ratio
     list_of_equations = [
-        f(1 + aspect_ratio, 0),
-        f(1 - aspect_ratio, 0),
-        f(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
+        f(*outer_equatorial_point),
+        f(*inner_equatorial_point),
+        f(*high_point),
         f(x_sep, y_sep),
-        fy(1 + aspect_ratio, 0),
-        fy(1 - aspect_ratio, 0),
-        fx(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
+        fy(*outer_equatorial_point),
+        fy(*inner_equatorial_point),
+        fx(*high_point),
         fx(x_sep, y_sep),
         fy(x_sep, y_sep),
-        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
-        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
-        fxx(1 - triangularity*aspect_ratio, elongation*aspect_ratio) +
-        N_3*fy(1 - triangularity*aspect_ratio, elongation*aspect_ratio),
+        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
+        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
+        fxx(*high_point) +
+        N_3*fy(*high_point),
         ]
     return list_of_equations
 
 
 def constraints_double_null(
-        f, first_order_d, second_order_d, A, aspect_ratio,
-        triangularity, elongation, N_coeffs):
+        f, first_order_d, second_order_d, params):
     """Creates set of constraints for parametric GS solution double-null
     plasma configuration.
 
@@ -160,29 +157,31 @@ def constraints_double_null(
             function f
         second_order_d ((callable, callable)): second order derivatives of the
         function f: (d^2/dy^2(f), d^2/dx^2(f))
-        A (float): Plasma parameter
-        aspect_ratio (float): Plasma parameter
-        triangularity (float): Plasma parameter
-        elongation (float): Plasma parameter
-        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
-            plasma parameters
+        params (dict): contains the plasma parameters
+            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
 
     Returns:
         list: set of constraints
     """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
-    N_1, N_2, N_3 = N_coeffs
+    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
+    aspect_ratio = params["aspect_ratio"]
+    triangularity = params["aspect_ratio"]
+    elongation = params["elongation"]
 
+    outer_equatorial_point = (1 + aspect_ratio, 0)
+    inner_equatorial_point = (1 - aspect_ratio, 0)
+    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
     x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, 1.1*elongation*aspect_ratio
     list_of_equations = [
-        f(1 + aspect_ratio, 0),
-        f(1 - aspect_ratio, 0),
+        f(*outer_equatorial_point),
+        f(*inner_equatorial_point),
         f(x_sep, y_sep),
         fx(x_sep, y_sep),
         fy(x_sep, y_sep),
-        fyy(1 + aspect_ratio, 0) + N_1*fx(1 + aspect_ratio, 0),
-        fyy(1 - aspect_ratio, 0) + N_2*fx(1 - aspect_ratio, 0),
+        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
+        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
         ]
     return list_of_equations
 
