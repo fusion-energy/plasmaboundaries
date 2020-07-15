@@ -7,7 +7,7 @@ def derivatives(f, order):
     Does not computes xy or yx derivatives.
 
     Args:
-        f (callable f(x, y, coefficients_c, pkg)): function
+        f (callable f(x, y, c_i, pkg)): function
         order (int): order of differenciation
 
     Returns:
