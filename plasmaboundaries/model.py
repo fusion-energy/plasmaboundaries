@@ -1,6 +1,4 @@
-from plasmaboundaries.magnetic_flux import psi_up_down_symmetric, \
-    psi_up_down_asymmetric, derivatives
-
+import plasmaboundaries
 import numpy as np
 from scipy.optimize import fsolve
 import sympy as sp
@@ -56,15 +54,10 @@ def constraints(p, params, config):
         list: set of constraints
     """
 
-    if config == "non-null" or config == "double-null":
-        psi_ = psi_up_down_symmetric
-    else:
-        psi_ = psi_up_down_asymmetric
-
     def psi(x, y):
-        return psi_(x, y, p, params["A"], pkg='sp')
-    psi_x_sp, psi_y_sp = derivatives(psi, 1)
-    psi_xx_sp, psi_yy_sp = derivatives(psi, 2)
+        return plasmaboundaries.psi(x, y, p, params["A"], config, pkg='sp')
+    psi_x_sp, psi_y_sp = plasmaboundaries.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = plasmaboundaries.derivatives(psi, 2)
 
     psi_x = val_from_sp(psi_x_sp)
     psi_y = val_from_sp(psi_y_sp)
@@ -270,18 +263,14 @@ def compute_psi(params, config="non-null", return_coeffs=False):
         (callable) or (callable, list): Magnetic flux fonction and
             coefficients c_i (only if return_coeffs is True)
     """
-    if config == "non-null" or config == "double-null":
-        psi = psi_up_down_symmetric
-    elif config == "single-null":
-        psi = psi_up_down_asymmetric
 
     coefficients = compute_coefficients_c_i(
         params, constraints=constraints,
         config=config)
 
     def new_psi(X, Y, pkg='np'):
-        return psi(
-            X, Y, c_i=coefficients, A=params["A"], pkg=pkg)
+        return plasmaboundaries.psi(
+            X, Y, c_i=coefficients, A=params["A"], config=config, pkg=pkg)
 
     if return_coeffs:
         return new_psi, coefficients
