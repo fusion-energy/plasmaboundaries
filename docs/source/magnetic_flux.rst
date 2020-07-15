@@ -1,4 +1,4 @@
-plasmaboundaries.magnetic\_flux module
+Magnetic Flux
 ========================
 
 

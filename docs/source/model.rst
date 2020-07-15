@@ -1,4 +1,4 @@
-plasmaboundaries.model module
+Plasmaboundaries Model
 ========================
 
 .. automodule:: plasmaboundaries.model
