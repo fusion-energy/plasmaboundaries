@@ -11,8 +11,8 @@ This code computes and plots analytical solutions of the Grad-Shafranov (GS) equ
 .. toctree::
    :maxdepth: 2
 
-   magnetic_flux
-   model
+   plasmaboundaries.magnetic_flux
+   plasmaboundaries.model
 
 
 Installation
