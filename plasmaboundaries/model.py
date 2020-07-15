@@ -54,150 +54,55 @@ def constraints(p, params, config):
         list: set of constraints
     """
 
+    # create sympy expressions for derivatives
     def psi(x, y):
         return plasmaboundaries.psi(x, y, p, params["A"], config, pkg='sp')
     psi_x_sp, psi_y_sp = plasmaboundaries.derivatives(psi, 1)
     psi_xx_sp, psi_yy_sp = plasmaboundaries.derivatives(psi, 2)
 
-    psi_x = val_from_sp(psi_x_sp)
-    psi_y = val_from_sp(psi_y_sp)
-    psi_xx = val_from_sp(psi_xx_sp)
-    psi_yy = val_from_sp(psi_yy_sp)
+    psi_x, psi_y = val_from_sp(psi_x_sp), val_from_sp(psi_y_sp)
+    psi_xx, psi_yy = val_from_sp(psi_xx_sp), val_from_sp(psi_yy_sp)
 
-    arguments = [psi, (psi_x, psi_y), (psi_xx, psi_yy), params]
-    if config == "non-null":
-        list_of_equations = constraints_non_null(*arguments)
-    elif config == "single-null":
-        list_of_equations = constraints_single_null(*arguments)
-    elif config == "double-null":
-        list_of_equations = constraints_double_null(*arguments)
-    return list_of_equations
-
-
-def constraints_non_null(
-        f, first_order_d, second_order_d, params):
-    """Creates set of constraints for parametric GS solution non-null
-    plasma configuration.
-
-    Args:
-        f (callable): function f(x, y)
-        first_order_d ((callable, callable)): first order derivatives of the
-            function f
-        second_order_d ((callable, callable)): second order derivatives of the
-        function f: (d^2/dy^2(f), d^2/dx^2(f))
-        params (dict): contains the plasma parameters
-            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
-
-    Returns:
-        list: set of constraints
-    """
-    fx, fy = first_order_d
-    fxx, fyy = second_order_d
-    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
+    # create test points
     aspect_ratio = params["aspect_ratio"]
     triangularity = params["aspect_ratio"]
     elongation = params["elongation"]
-
     outer_equatorial_point, inner_equatorial_point, high_point = \
         test_points(aspect_ratio, elongation, triangularity)
 
-    list_of_equations = [
-        f(*outer_equatorial_point),
-        f(*inner_equatorial_point),
-        f(*high_point),
-        fx(*high_point),
-        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
-        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
-        fxx(*high_point) +
-        N_3*fy(*high_point)
-        ]
-    return list_of_equations
-
-
-def constraints_single_null(
-        f, first_order_d, second_order_d, params):
-    """Creates set of constraints for parametric GS solution single-null
-    plasma configuration.
-
-    Args:
-        f (callable): function f(x, y)
-        first_order_d ((callable, callable)): first order derivatives of the
-            function f
-        second_order_d ((callable, callable)): second order derivatives of the
-        function f: (d^2/dy^2(f), d^2/dx^2(f))
-        params (dict): contains the plasma parameters
-            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
-
-    Returns:
-        list: set of constraints
-    """
-    fx, fy = first_order_d
-    fxx, fyy = second_order_d
+    # constraints common to all configurations
     N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
-    aspect_ratio = params["aspect_ratio"]
-    triangularity = params["aspect_ratio"]
-    elongation = params["elongation"]
 
-    outer_equatorial_point, inner_equatorial_point, high_point = \
-        test_points(aspect_ratio, elongation, triangularity)
-    x_sep, y_sep = 1-(1+SHIFT)*triangularity*aspect_ratio, \
-        -(1+SHIFT)*elongation*aspect_ratio
-    list_of_equations = [
-        f(*outer_equatorial_point),
-        f(*inner_equatorial_point),
-        f(*high_point),
-        f(x_sep, y_sep),
-        fy(*outer_equatorial_point),
-        fy(*inner_equatorial_point),
-        fx(*high_point),
-        fx(x_sep, y_sep),
-        fy(x_sep, y_sep),
-        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
-        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
-        fxx(*high_point) +
-        N_3*fy(*high_point),
+    list_of_constraints = [
+        psi(*outer_equatorial_point),
+        psi(*inner_equatorial_point),
+        psi_yy(*outer_equatorial_point) + N_1*psi_x(*outer_equatorial_point),
+        psi_yy(*inner_equatorial_point) + N_2*psi_x(*inner_equatorial_point),
         ]
-    return list_of_equations
 
+    # add constraints common to non-null and single-null
+    if config in ["non-null", "single-null"]:
+        list_of_constraints += [
+            psi_xx(*high_point) + N_3*psi_y(*high_point),
+            psi(*high_point),
+            psi_x(*high_point),
+            ]
 
-def constraints_double_null(
-        f, first_order_d, second_order_d, params):
-    """Creates set of constraints for parametric GS solution double-null
-    plasma configuration.
-
-    Args:
-        f (callable): function f(x, y)
-        first_order_d ((callable, callable)): first order derivatives of the
-            function f
-        second_order_d ((callable, callable)): second order derivatives of the
-        function f: (d^2/dy^2(f), d^2/dx^2(f))
-        params (dict): contains the plasma parameters
-            (aspect_ratio, elongation, triangularity, A, N_1, N_2, N_3)
-
-    Returns:
-        list: set of constraints
-    """
-    fx, fy = first_order_d
-    fxx, fyy = second_order_d
-    N_1, N_2, N_3 = params["N_1"], params["N_2"], params["N_3"]
-    aspect_ratio = params["aspect_ratio"]
-    triangularity = params["aspect_ratio"]
-    elongation = params["elongation"]
-
-    outer_equatorial_point, inner_equatorial_point, high_point = \
-        test_points(aspect_ratio, elongation, triangularity)
-    x_sep, y_sep = 1-(1+SHIFT)*triangularity*aspect_ratio, \
-        (1+SHIFT)*elongation*aspect_ratio
-    list_of_equations = [
-        f(*outer_equatorial_point),
-        f(*inner_equatorial_point),
-        f(x_sep, y_sep),
-        fx(x_sep, y_sep),
-        fy(x_sep, y_sep),
-        fyy(*outer_equatorial_point) + N_1*fx(*outer_equatorial_point),
-        fyy(*inner_equatorial_point) + N_2*fx(*inner_equatorial_point),
+    # add constraints for single-null only
+    if config in ["single-null", "double-null"]:
+        x_sep, y_sep = 1-(1+SHIFT)*triangularity*aspect_ratio, \
+            -(1+SHIFT)*elongation*aspect_ratio
+        list_of_constraints += [
+            psi(x_sep, y_sep),
+            psi_x(x_sep, y_sep),
+            psi_y(x_sep, y_sep),
         ]
-    return list_of_equations
+    if config == "single-null":
+        list_of_constraints += [
+            psi_y(*outer_equatorial_point),
+            psi_y(*inner_equatorial_point),
+        ]
+    return list_of_constraints
 
 
 def compute_N_i(params):
