@@ -38,11 +38,11 @@ def psi(X, Y, c_i, A, config, pkg='numpy'):
         ValueError: If argument pkg is not in ['numpy', 'np', 'sympy', 'sp']
 
     Returns:
-        float or numpy.array: value(s) of magnetic flux
+        float or numpy.array or sympy.Add: value(s) of magnetic flux
     """
-    if pkg == 'numpy' or pkg == 'np':
+    if pkg in ['numpy', 'np']:
         pkg = np
-    elif pkg == 'sympy' or pkg == 'sp':
+    elif pkg in ['sympy', 'sp']:
         pkg = sp
     else:
         raise ValueError("Unexpected string for argument pkg")
