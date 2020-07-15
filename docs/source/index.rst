@@ -107,15 +107,3 @@ References
 
 .. [1] *"One size fits all" analytical solutions to the Grad-Shafranov equation*, Physics of Plasmas 17 (2010) https://doi.org/10.1063/1.3328818
 .. _Pip: https://pip.pypa.io/en/stable/
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
-
