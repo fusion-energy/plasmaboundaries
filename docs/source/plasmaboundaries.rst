@@ -1,9 +1,6 @@
 plasmaboundaries package
 ========================
 
-Submodules
-----------
-
 plasmaboundaries.magnetic\_flux module
 --------------------------------------
 
@@ -28,9 +25,6 @@ plasmaboundaries.parameters module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
----------------
 
 .. automodule:: plasmaboundaries
    :members:
