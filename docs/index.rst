@@ -8,7 +8,9 @@ plasmaboundaries
 
 This code computes and plots analytical solutions of the Grad-Shafranov (GS) equation for studying plasma equilibrium, stability and transport in fusion reactors based on the work of A. Cerfon and J. Freidberg [1]_.
 
-
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
 
 Installation
@@ -105,9 +107,7 @@ References
 .. _Pip: https://pip.pypa.io/en/stable/
 
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+
 Indices and tables
 ==================
 
