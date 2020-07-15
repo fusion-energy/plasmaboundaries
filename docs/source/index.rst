@@ -12,6 +12,8 @@ This code computes and plots analytical solutions of the Grad-Shafranov (GS) equ
    :maxdepth: 2
    :caption: Contents:
 
+   plasmaboundaries
+
 
 Installation
 -------------
