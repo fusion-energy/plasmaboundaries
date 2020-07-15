@@ -7,13 +7,32 @@ import sympy as sp
 
 
 def val_from_sp(expression):
+    """Transforms a sympy expression to a callable function
+    f(x, y)
+
+    Args:
+        expression (sympy.Add): sympy expression to be converted
+        which has symbols 'x' and 'y' in it.
+    """
     def val(x, y):
         return expression.subs('x', x).subs('y', y)
     return val
 
 
 def constraints(p, params, config):
+    """Creates set of constraints for parametric GS solution for any
+    plasma configuration.
 
+    Args:
+        p (list): c_i coefficients (floats)
+        params (dict): contains the plasma parameters
+        (aspect_ratio, elongation, triangularity, A)
+        config (str): shape of the plasma 'non-null', 'single-null',
+        'double-null'.
+
+    Returns:
+        list: set of constraints
+    """
     A = params["A"]
     aspect_ratio = params["aspect_ratio"]
     triangularity = params["triangularity"]
@@ -48,7 +67,26 @@ def constraints(p, params, config):
 def constraints_non_null(
         f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
+    """Creates set of constraints for parametric GS solution non-null
+    plasma configuration.
 
+    Args:
+        f (callable): function f(x, y)
+        first_order_d ((callable, callable)): first order derivatives of the
+        function f
+        second_order_d ((callable, callable)): second order derivatives of the
+        function f: (d^2/dy^2(f), d^2/dx^2(f))
+        A (float): Plasma parameter
+        aspect_ratio (float): Plasma parameter
+        triangularity (float): Plasma parameter
+        elongation (float): Plasma parameter
+        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
+        plasma
+        parameters
+
+    Returns:
+        list: set of constraints
+    """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
     N_1, N_2, N_3 = N_coeffs
@@ -69,7 +107,25 @@ def constraints_non_null(
 def constraints_single_null(
         f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
+    """Creates set of constraints for parametric GS solution single-null
+    plasma configuration.
 
+    Args:
+        f (callable): function f(x, y)
+        first_order_d ((callable, callable)): first order derivatives of the
+        function f
+        second_order_d ((callable, callable)): second order derivatives of the
+        function f: (d^2/dy^2(f), d^2/dx^2(f))
+        A (float): Plasma parameter
+        aspect_ratio (float): Plasma parameter
+        triangularity (float): Plasma parameter
+        elongation (float): Plasma parameter
+        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
+        parameters
+
+    Returns:
+        list: set of constraints
+    """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
     N_1, N_2, N_3 = N_coeffs
@@ -96,7 +152,26 @@ def constraints_single_null(
 def constraints_double_null(
         f, first_order_d, second_order_d, A, aspect_ratio,
         triangularity, elongation, N_coeffs):
+    """Creates set of constraints for parametric GS solution double-null
+    plasma configuration.
 
+    Args:
+        f (callable): function f(x, y)
+        first_order_d ((callable, callable)): first order derivatives of the
+        function f
+        second_order_d ((callable, callable)): second order derivatives of the
+        function f: (d^2/dy^2(f), d^2/dx^2(f))
+        A (float): Plasma parameter
+        aspect_ratio (float): Plasma parameter
+        triangularity (float): Plasma parameter
+        elongation (float): Plasma parameter
+        N_coeffs ((float, float, float)): Coefficients N_1, N_2, N_3 based on
+        plasma
+        parameters
+
+    Returns:
+        list: set of constraints
+    """
     fx, fy = first_order_d
     fxx, fyy = second_order_d
     N_1, N_2, N_3 = N_coeffs
@@ -115,10 +190,10 @@ def constraints_double_null(
 
 
 def compute_N_i(params):
-    """Computes the N_1 N_2 and N_3 coefficients based on plasma parameters
+    """Computes N_1, N_2 and N_3 coefficients based on plasma parameters
 
     Args:
-        params (dict): contains the plasma params
+        params (dict): contains the plasma parameters
         (aspect_ratio, elongation, triangularity, A)
 
     Returns:
@@ -137,10 +212,10 @@ def compute_N_i(params):
 
 
 def compute_coefficients_c_i(params, constraints, config):
-    """calculates the coefficients c_i based on a set of constraints
+    """Calculates the coefficients c_i based on a set of constraints
 
     Args:
-        params (dict): contains the plasma params
+        params (dict): contains the plasma parameters
         (aspect_ratio, elongation, triangularity, A)
         constraints (callable): list of equations
         coefficient_number (int): number of constraints/coefficients
@@ -163,10 +238,11 @@ def compute_coefficients_c_i(params, constraints, config):
 
 
 def compute_psi(params, config="non-null", return_coeffs=False):
-    """Compute the magnetic flux fonction
+    """Computes the magnetic flux fonction
 
     Args:
         params (dict): contains the plasma parameters
+        (aspect_ratio, elongation, triangularity, A)
         config (str, optional): shape of the plasma
          "non-null", "single-null", "double-null". Defaults to "non-null".
         return_coeffs (bool, optional): If True, will also return the
@@ -174,7 +250,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
 
     Returns:
         (callable) or (callable, list): Magnetic flux fonction and
-         coefficients c_i (if return_coeffs is True)
+        coefficients c_i (only if return_coeffs is True)
     """
     if config == "non-null" or config == "double-null":
         psi = psi_up_down_symmetric
