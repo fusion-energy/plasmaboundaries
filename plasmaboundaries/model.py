@@ -45,7 +45,7 @@ def constraints(p, params, config):
         psi_ = psi_up_down_asymmetric
 
     def psi(x, y):
-        return psi_(x, y, p, A, pkg=sp)
+        return psi_(x, y, p, A, pkg='sp')
     psi_x_sp, psi_y_sp = derivatives(psi, 1)
     psi_xx_sp, psi_yy_sp = derivatives(psi, 2)
 
@@ -261,7 +261,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
         params, constraints=constraints,
         config=config)
 
-    def new_psi(X, Y, pkg=np):
+    def new_psi(X, Y, pkg='np'):
         return psi(
             X, Y, c_i=coefficients, A=params["A"], pkg=pkg)
 

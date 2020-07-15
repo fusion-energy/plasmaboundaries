@@ -20,7 +20,7 @@ def derivatives(f, order):
     return f_x, f_y
 
 
-def psi_up_down_symmetric(X, Y, c_i, A, pkg=np):
+def psi_up_down_symmetric(X, Y, c_i, A, pkg='numpy'):
     """returns the value of magnetic flux at point (X, Y)
     according to coefficients ci
 
@@ -28,12 +28,19 @@ def psi_up_down_symmetric(X, Y, c_i, A, pkg=np):
         X (float or numpy.array): x coordinate
         Y (float or numpy.array): y coordinate
         c_i (list): list of floats, the ci coefficients
-        pkg (callable, optional): if set to np (resp. sp), numpy (resp. sympy)
-         objects will be used. Defaults to np.
+        pkg (str, optional): if set to 'numpy' (resp. 'sympy'), numpy
+        (resp. sympy) objects will be used. Defaults to 'numpy'.
 
     Returns:
         float or numpy.array: value(s) of magnetic flux
     """
+    if pkg == 'numpy' or pkg == 'np':
+        pkg = np
+    elif pkg == 'sympy' or pkg == 'sp':
+        pkg = sp
+    else:
+        raise ValueError("Unexpected string for argument pkg")
+    print(pkg)
     psi_1 = 1
     psi_2 = X**2
     psi_3 = Y**2 - X**2*pkg.log(X)
@@ -49,7 +56,7 @@ def psi_up_down_symmetric(X, Y, c_i, A, pkg=np):
     return val
 
 
-def psi_up_down_asymmetric(X, Y, c_i, A, pkg=np):
+def psi_up_down_asymmetric(X, Y, c_i, A, pkg='numpy'):
     """returns the value of magnetic flux at point (X, Y)
     according to coefficients ci
 
@@ -57,12 +64,18 @@ def psi_up_down_asymmetric(X, Y, c_i, A, pkg=np):
         X (float or numpy.array): x coordinate
         Y (float or numpy.array): y coordinate
         c_i (list): list of floats, the ci coefficients
-        pkg (callable, optional): if set to np (resp. sp), numpy (resp. sympy)
-         objects will be used. Defaults to np.
+        pkg (str, optional): if set to 'numpy' (resp. 'sympy'), numpy
+        (resp. sympy) objects will be used. Defaults to 'numpy'.
 
     Returns:
         float or numpy.array: value(s) of magnetic flux
     """
+    if pkg == 'numpy' or pkg == 'np':
+        pkg = np
+    elif pkg == 'sympy' or pkg == 'sp':
+        pkg = sp
+    else:
+        raise ValueError("Unexpected string for argument pkg")
 
     psi_1 = 1
     psi_2 = X**2
