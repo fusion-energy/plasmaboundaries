@@ -5,14 +5,14 @@
 
 plasmaboundaries
 ============================================
-
+Test test test
 This code computes and plots analytical solutions of the Grad-Shafranov (GS) equation for studying plasma equilibrium, stability and transport in fusion reactors based on the work of A. Cerfon and J. Freidberg [1]_.
 
 .. toctree::
    :maxdepth: 2
 
-   plasmaboundaries.magnetic_flux
-   plasmaboundaries.model
+   magnetic_flux
+   model
 
 
 Installation
@@ -107,3 +107,11 @@ References
 
 .. [1] *"One size fits all" analytical solutions to the Grad-Shafranov equation*, Physics of Plasmas 17 (2010) https://doi.org/10.1063/1.3328818
 .. _Pip: https://pip.pypa.io/en/stable/
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
