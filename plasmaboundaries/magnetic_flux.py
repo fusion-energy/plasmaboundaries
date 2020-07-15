@@ -40,7 +40,7 @@ def psi_up_down_symmetric(X, Y, c_i, A, pkg='numpy'):
         pkg = sp
     else:
         raise ValueError("Unexpected string for argument pkg")
-    print(pkg)
+
     psi_1 = 1
     psi_2 = X**2
     psi_3 = Y**2 - X**2*pkg.log(X)
