@@ -10,7 +10,6 @@ This code computes and plots analytical solutions of the Grad-Shafranov (GS) equ
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    magnetic_flux
    model
