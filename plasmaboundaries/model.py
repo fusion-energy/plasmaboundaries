@@ -6,6 +6,28 @@ from scipy.optimize import fsolve
 import sympy as sp
 
 
+SHIFT = 0.1  # a 10% shift is assumed for computing the X point coordinates
+
+
+def test_points(aspect_ratio, elongation, triangularity):
+    """Compute the coordinates of inner and outer equatorial points and high
+    point based on plasma geometrical parameters.
+
+    Args:
+        aspect_ratio (float): minor radius / major radius
+        elongation (float): plasma elongation
+        triangularity (float): plasma triangularity
+
+    Returns:
+        ((float, float), (float, float), (float, float)): points (x, y)
+            coordinates
+    """
+    outer_equatorial_point = (1 + aspect_ratio, 0)
+    inner_equatorial_point = (1 - aspect_ratio, 0)
+    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
+    return outer_equatorial_point, inner_equatorial_point, high_point
+
+
 def val_from_sp(expression):
     """Transforms a sympy expression to a callable function
     f(x, y)
@@ -83,9 +105,8 @@ def constraints_non_null(
     triangularity = params["aspect_ratio"]
     elongation = params["elongation"]
 
-    outer_equatorial_point = (1 + aspect_ratio, 0)
-    inner_equatorial_point = (1 - aspect_ratio, 0)
-    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
+    outer_equatorial_point, inner_equatorial_point, high_point = \
+        test_points(aspect_ratio, elongation, triangularity)
 
     list_of_equations = [
         f(*outer_equatorial_point),
@@ -124,10 +145,10 @@ def constraints_single_null(
     triangularity = params["aspect_ratio"]
     elongation = params["elongation"]
 
-    outer_equatorial_point = (1 + aspect_ratio, 0)
-    inner_equatorial_point = (1 - aspect_ratio, 0)
-    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
-    x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, -1.1*elongation*aspect_ratio
+    outer_equatorial_point, inner_equatorial_point, high_point = \
+        test_points(aspect_ratio, elongation, triangularity)
+    x_sep, y_sep = 1-(1+SHIFT)*triangularity*aspect_ratio, \
+        -(1+SHIFT)*elongation*aspect_ratio
     list_of_equations = [
         f(*outer_equatorial_point),
         f(*inner_equatorial_point),
@@ -170,10 +191,10 @@ def constraints_double_null(
     triangularity = params["aspect_ratio"]
     elongation = params["elongation"]
 
-    outer_equatorial_point = (1 + aspect_ratio, 0)
-    inner_equatorial_point = (1 - aspect_ratio, 0)
-    high_point = (1 - triangularity*aspect_ratio, elongation*aspect_ratio)
-    x_sep, y_sep = 1-1.1*triangularity*aspect_ratio, 1.1*elongation*aspect_ratio
+    outer_equatorial_point, inner_equatorial_point, high_point = \
+        test_points(aspect_ratio, elongation, triangularity)
+    x_sep, y_sep = 1-(1+SHIFT)*triangularity*aspect_ratio, \
+        (1+SHIFT)*elongation*aspect_ratio
     list_of_equations = [
         f(*outer_equatorial_point),
         f(*inner_equatorial_point),
