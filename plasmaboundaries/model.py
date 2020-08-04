@@ -2,6 +2,7 @@ import plasmaboundaries
 import numpy as np
 from scipy.optimize import fsolve
 import sympy as sp
+import matplotlib.pyplot as plt
 
 
 SHIFT = 0.1  # a 10% shift is assumed for computing the X point coordinates
@@ -198,20 +199,20 @@ def get_separatrix_coordinates(params, config):
         numpy.array: list of points coordinates
     """
 
-    epsilon = params["epsilon"]
+    aspect_ratio = params["aspect_ratio"]
     elongation = params["elongation"]
     triangularity = params["triangularity"]
-    inner_equatorial_point = (1 - epsilon, 0)
-    outer_equatorial_point = (1 + epsilon, 0)
+    inner_equatorial_point = (1 - aspect_ratio, 0)
+    outer_equatorial_point = (1 + aspect_ratio, 0)
     if config == "non-null" or config == "double-null":
         if config == "non-null":
-            low_point = (1 - epsilon*triangularity, -elongation*epsilon)
+            low_point = (1 - aspect_ratio*triangularity, -elongation*aspect_ratio)
         else:
-            low_point = (1 - 1.1*triangularity*epsilon, -1.1*elongation*epsilon)
+            low_point = (1 - 1.1*triangularity*aspect_ratio, -1.1*elongation*aspect_ratio)
         high_point = (low_point[0], -low_point[1])
     elif config == "single-null":
-        low_point = (1 - 1.1*triangularity*epsilon, -1.1*elongation*epsilon)
-        high_point = (1 - epsilon*triangularity, elongation*epsilon)
+        low_point = (1 - 1.1*triangularity*aspect_ratio, -1.1*elongation*aspect_ratio)
+        high_point = (1 - aspect_ratio*triangularity, elongation*aspect_ratio)
 
     xmin, xmax = inner_equatorial_point[0], outer_equatorial_point[0]
     ymin, ymax = low_point[1], high_point[1]
@@ -223,16 +224,13 @@ def get_separatrix_coordinates(params, config):
     X, Y = np.meshgrid(x, y)
 
     # compute psi
-    psi = plasma_boundaries.compute_psi(params, config=config)
+    psi = compute_psi(params, config=config)
     Z = psi(X, Y)  # compute magnetic flux
 
     # add contour
-    separatrix = plt.contour(
-        X, Y, Z, levels=[0], colors="white", linestyles="dashed")
+    separatrix = plt.contour(X, Y, Z, levels=[0], colors="white", linestyles="dashed")
 
     # extract points coordinates
-    for point in [low_point, high_point, inner_equatorial_point, outer_equatorial_point]:
-        plt.scatter(point[0], point[1])
     for p in separatrix.collections[0].get_paths():
         v = p.vertices
         tol = 0.01
