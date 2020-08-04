@@ -140,8 +140,7 @@ def compute_coefficients_c_i(params, constraints, config):
     Returns:
         list: coefficients c_i (floats)
     """
-    N_1, N_2, N_3 = compute_N_i(params)
-    params["N_1"], params["N_2"], params["N_3"] = N_1, N_2, N_3
+    params["N_1"], params["N_2"], params["N_3"] = compute_N_i(params)
 
     if config in ["non-null", "double-null"]:
         coefficient_number = 7
@@ -181,3 +180,66 @@ def compute_psi(params, config="non-null", return_coeffs=False):
         return new_psi, coefficients
     else:
         return new_psi
+
+
+def get_separatrix_coordinates(params, config):
+    """Creates a list of points describing the separatrix
+
+    Args:
+        params (dict): contains the plasma parameters
+            (aspect_ratio, elongation, triangularity, A)
+        config (str): shape of the plasma
+            "non-null", "single-null", "double-null".
+
+    Raises:
+        ValueError: If no separatrix is found within the points of interest
+
+    Returns:
+        numpy.array: list of points coordinates
+    """
+
+    epsilon = params["epsilon"]
+    elongation = params["elongation"]
+    triangularity = params["triangularity"]
+    inner_equatorial_point = (1 - epsilon, 0)
+    outer_equatorial_point = (1 + epsilon, 0)
+    if config == "non-null" or config == "double-null":
+        if config == "non-null":
+            low_point = (1 - epsilon*triangularity, -elongation*epsilon)
+        else:
+            low_point = (1 - 1.1*triangularity*epsilon, -1.1*elongation*epsilon)
+        high_point = (low_point[0], -low_point[1])
+    elif config == "single-null":
+        low_point = (1 - 1.1*triangularity*epsilon, -1.1*elongation*epsilon)
+        high_point = (1 - epsilon*triangularity, elongation*epsilon)
+
+    xmin, xmax = inner_equatorial_point[0], outer_equatorial_point[0]
+    ymin, ymax = low_point[1], high_point[1]
+
+    security_factor = 1.1
+    x = np.arange(xmin*security_factor, xmax*security_factor, step=0.01)
+    y = np.arange(ymin*security_factor, ymax*security_factor, step=0.01)
+
+    X, Y = np.meshgrid(x, y)
+
+    # compute psi
+    psi = plasma_boundaries.compute_psi(params, config=config)
+    Z = psi(X, Y)  # compute magnetic flux
+
+    # add contour
+    separatrix = plt.contour(
+        X, Y, Z, levels=[0], colors="white", linestyles="dashed")
+
+    # extract points coordinates
+    for point in [low_point, high_point, inner_equatorial_point, outer_equatorial_point]:
+        plt.scatter(point[0], point[1])
+    for p in separatrix.collections[0].get_paths():
+        v = p.vertices
+        tol = 0.01
+        if (inner_equatorial_point[0]*(1-tol) <= v[:, 0]).all() and \
+            (v[:, 0] <= outer_equatorial_point[0]*(1+tol)).all() and \
+                (low_point[1]*(1+tol) <= v[:, 1]).all() and \
+                (v[:, 1] <= high_point[1]*(1+tol)).all():
+            # separatrix_x, separatrix_y = v[:, 0], v[:, 1]
+            return v
+    raise ValueError('No psi=0 contour is found within points of interests')
