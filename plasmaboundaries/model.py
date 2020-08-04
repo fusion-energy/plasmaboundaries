@@ -218,7 +218,7 @@ def get_separatrix_coordinates(params, config):
     ymin, ymax = low_point[1], high_point[1]
 
     security_factor = 1.1
-    x = np.arange(xmin*security_factor, xmax*security_factor, step=0.01)
+    x = np.arange(xmin/security_factor, xmax*security_factor, step=0.01)
     y = np.arange(ymin*security_factor, ymax*security_factor, step=0.01)
 
     X, Y = np.meshgrid(x, y)
