@@ -231,17 +231,12 @@ def get_separatrix_coordinates(params, config):
     separatrix = plt.contour(X, Y, Z, levels=[0], colors="white", linestyles="dashed")
 
     # extract points coordinates
-    paths = separatrix.collections[0].get_paths()
-    if len(paths) == 1:
-        return paths[0].vertices
-    else:
-        for p in paths:
-            v = p.vertices
-            tol = 0.01
-            if (inner_equatorial_point[0]*(1-tol) <= v[:, 0]).all() and \
-                (v[:, 0] <= outer_equatorial_point[0]*(1+tol)).all() and \
-                    (low_point[1]*(1+tol) <= v[:, 1]).all() and \
-                    (v[:, 1] <= high_point[1]*(1+tol)).all():
-                separatrix_x, separatrix_y = v[:, 0], v[:, 1]
-                return v
-    raise ValueError('No psi=0 contour is found within points of interests')
+    points = np.empty((0, 2))
+    for p in separatrix.collections[0].get_paths():
+        v = p.vertices
+        points = np.append(points, v, 0)
+
+    # remove contours
+    for cont in separatrix.collections:
+        cont.remove()
+    return points
