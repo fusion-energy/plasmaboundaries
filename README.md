@@ -3,6 +3,8 @@
 This code computes and plots analytical solutions of the Grad-Shafranov (GS) equation for studying plasma equilibrium, stability and transport in fusion reactors based on the work of A. Cerfon and J. Freidberg.
 Details on the method can be found in [*"One size fits all" analytical solutions to the Grad-Shafranov equation*, Physics of Plasmas 17 (2010)](https://doi.org/10.1063/1.3328818)
 
+Documentation can be found [here](https://plasma-boundaries.readthedocs.io/en/latest/).
+
 ## Installation
 You can install plasma-boundaries using [Pip](https://pip.pypa.io/en/stable/) by running:
 ```pip install plasmaboundaries```
