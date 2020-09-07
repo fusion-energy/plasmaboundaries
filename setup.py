@@ -19,4 +19,5 @@ setuptools.setup(
         'numpy',
         'sympy',
     ],
+    zip_safe=True,
 )
