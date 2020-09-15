@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="plasmaboundaries",
-    version="0.1.1",
+    version="0.1.3",
     author="Remi Delaporte-Mathurin",
     author_email="rdelaportemathurin@gmail.com",
     description="Determine plasma flux functions for various plasma parameters and plasma configurations",
@@ -10,7 +10,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     package_dir={"plasmaboundaries": "plasmaboundaries"},
     package_data={
-        "plasmaboundaries": [
+        "": [
             "requirements.txt",
             "README.md",
             "LICENSE.txt",
