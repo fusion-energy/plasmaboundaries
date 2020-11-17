@@ -191,6 +191,7 @@ def get_separatrix_coordinates(params, config, step=0.01):
             (aspect_ratio, elongation, triangularity, A)
         config (str): shape of the plasma
             "non-null", "single-null", "double-null".
+        step (float, optional): Resolution of the domain. Defaults to 0.01.
 
     Raises:
         ValueError: If no separatrix is found within the points of interest
