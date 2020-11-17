@@ -128,31 +128,6 @@ def compute_N_i(params):
     return N_1, N_2, N_3
 
 
-def compute_coefficients_c_i(params, constraints, config):
-    """Calculates the coefficients c_i based on a set of constraints
-
-    Args:
-        params (dict): contains the plasma parameters
-            (aspect_ratio, elongation, triangularity, A)
-        constraints (callable): list of equations
-        coefficient_number (int): number of constraints/coefficients
-            (7 if up-down symetrical, 12 if up-down asymmetrical)
-
-    Returns:
-        list: coefficients c_i (floats)
-    """
-    params["N_1"], params["N_2"], params["N_3"] = compute_N_i(params)
-
-    if config in ["non-null", "double-null"]:
-        coefficient_number = 7
-    elif config == "single-null":
-        coefficient_number = 12
-    x_0 = np.zeros(coefficient_number) + 1
-
-    coefficients = fsolve(constraints, x_0, args=(params, config))
-    return coefficients
-
-
 def compute_psi(params, config="non-null", return_coeffs=False):
     """Computes the magnetic flux fonction
 
@@ -168,10 +143,14 @@ def compute_psi(params, config="non-null", return_coeffs=False):
         (callable) or (callable, list): Magnetic flux fonction and
             coefficients c_i (only if return_coeffs is True)
     """
+    params["N_1"], params["N_2"], params["N_3"] = compute_N_i(params)
 
-    coefficients = compute_coefficients_c_i(
-        params, constraints=constraints,
-        config=config)
+    if config in ["non-null", "double-null"]:
+        coefficient_number = 7
+    elif config == "single-null":
+        coefficient_number = 12
+    x_0 = np.zeros(coefficient_number)
+    coefficients = fsolve(constraints, x_0, args=(params, config), xtol=10)
 
     def new_psi(X, Y, pkg='np'):
         return plasmaboundaries.psi(
