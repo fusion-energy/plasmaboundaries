@@ -183,7 +183,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
         return new_psi
 
 
-def get_separatrix_coordinates(params, config):
+def get_separatrix_coordinates(params, config, step=0.01):
     """Creates a list of points describing the separatrix
 
     Args:
@@ -218,8 +218,8 @@ def get_separatrix_coordinates(params, config):
     ymin, ymax = low_point[1], high_point[1]
 
     security_factor = 1.1
-    x = np.arange(xmin/security_factor, xmax*security_factor, step=0.01)
-    y = np.arange(ymin*security_factor, ymax*security_factor, step=0.01)
+    x = np.arange(xmin/security_factor, xmax*security_factor, step=step)
+    y = np.arange(ymin*security_factor, ymax*security_factor, step=step)
 
     X, Y = np.meshgrid(x, y)
 
