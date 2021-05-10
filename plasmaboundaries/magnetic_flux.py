@@ -1,5 +1,6 @@
-import numpy as np
-import sympy as sp
+from numpy import log as np_log
+from sympy import log as sp_log
+from sympy import symbols, diff
 
 
 def derivatives(f, order):
@@ -13,10 +14,10 @@ def derivatives(f, order):
     Returns:
         (sympy.Add, sympy.Add): (fx^order, fy^order)
     """
-    x, y = sp.symbols("x y")
+    x, y = symbols("x y")
     f_sp = f(x=x, y=y)
-    f_x = sp.diff(f_sp, *[x for i in range(order)])
-    f_y = sp.diff(f_sp, *[y for i in range(order)])
+    f_x = diff(f_sp, *[x for i in range(order)])
+    f_y = diff(f_sp, *[y for i in range(order)])
     return f_x, f_y
 
 
@@ -41,30 +42,30 @@ def psi(X, Y, c_i, A, config, pkg='numpy'):
         float or numpy.array or sympy.Add: value(s) of magnetic flux
     """
     if pkg in ['numpy', 'np']:
-        pkg = np
+        log = np_log
     elif pkg in ['sympy', 'sp']:
-        pkg = sp
+        log = sp_log
     else:
         raise ValueError("Unexpected string for argument pkg")
 
     psi_1 = 1
     psi_2 = X**2
-    psi_3 = Y**2 - X**2*pkg.log(X)
+    psi_3 = Y**2 - X**2*log(X)
     psi_4 = X**4 - 4*X**2*Y**2
-    psi_5 = 2*Y**4 - 9*Y**2*X**2 + 3*X**4*pkg.log(X) - 12*X**2*Y**2*pkg.log(X)
+    psi_5 = 2*Y**4 - 9*Y**2*X**2 + 3*X**4*log(X) - 12*X**2*Y**2*log(X)
     psi_6 = X**6 - 12*X**4*Y**2 + 8*X**2*Y**4
-    psi_7 = 8*Y**6 - 140*Y**4*X**2 + 75*Y**2*X**4 - 15*X**6*pkg.log(X) + \
-        180*X**4*Y**2*pkg.log(X) - 120*X**2*Y**4*pkg.log(X)
+    psi_7 = 8*Y**6 - 140*Y**4*X**2 + 75*Y**2*X**4 - 15*X**6*log(X) + \
+        180*X**4*Y**2*log(X) - 120*X**2*Y**4*log(X)
     psis = [psi_1, psi_2, psi_3, psi_4, psi_5, psi_6, psi_7]
 
     if config == 'single-null':
         psi_8 = Y
         psi_9 = Y*X**2
-        psi_10 = Y**3 - 3*Y*X**2*pkg.log(X)
+        psi_10 = Y**3 - 3*Y*X**2*log(X)
         psi_11 = 3*Y*X**4 - 4*Y**3*X**2
-        psi_12 = 8*Y**5 - 45*Y*X**4 - 80*Y**3*X**2*pkg.log(X) + \
-            60*Y*X**4*pkg.log(X)
+        psi_12 = 8*Y**5 - 45*Y*X**4 - 80*Y**3*X**2*log(X) + \
+            60*Y*X**4*log(X)
         psis += [psi_8, psi_9, psi_10, psi_11, psi_12]
-    val = X**4/8 + A*(1/2*X**2*pkg.log(X) - X**4/8) + \
+    val = X**4/8 + A*(1/2*X**2*log(X) - X**4/8) + \
         sum([c_i[i]*psis[i] for i in range(len(c_i))])
     return val
