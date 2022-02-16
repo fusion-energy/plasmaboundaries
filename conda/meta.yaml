@@ -1,0 +1,51 @@
+{% set name = "plasma_boundaries" %}
+
+package:
+  name: "{{ name|lower }}"
+  # conda package version tag is obtained from the git release version tag
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python {{ python }}
+    - setuptools
+  run:
+    - python
+    - scipy >= 1.7.0
+    - numpy >= 1.21.1
+    - sympy >= 1.8
+    - matplotlib >= 3.4.2
+
+test:
+  imports:
+    - plasma_boundaries
+  requires:
+    - pytest
+  source_files:
+    - tests/
+    - examples/
+  commands:
+    - pytest tests
+    - python examples/plot_ITER_plasmas.py
+    - python examples/plot_NSTX.py
+
+about:
+  home: "https://github.com/fusion-energy/plasma_boundaries"
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  doc_url: https://plasma-boundaries.readthedocs.io/en/latest/
+  dev_url: https://github.com/fusion-energy/plasma_boundaries
+  summary: plasma_boundaries - Determine plasma flux functions for various plasma parameters and plasma configurations.
+
+extra:
+  recipe-maintainers:
+    - RemDelaporteMathurin
+    - shimwell
