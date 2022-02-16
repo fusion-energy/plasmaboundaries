@@ -7,22 +7,23 @@ Details on the method can be found in [*"One size fits all" analytical solutions
 
 Documentation can be found [here](https://plasma-boundaries.readthedocs.io/en/latest/).
 
-## Installation
+## Installation (Conda)
+You can install plasma-boundaries using [Conda](https://docs.conda.io/en/latest/) by running:
+```bash
+conda install -c fusion-energy -c conda-forge plasma_boundaries
+```
+
+## Installation (pip)
 You can install plasma-boundaries using [Pip](https://pip.pypa.io/en/stable/) by running:
 ```bash
 pip install plasma_boundaries
 ```
 
-Alternatively you can clone the repository:
+Alternatively you can pip install from the repository:
 ```bash
-git clone https://github.com/fusion-energy/plasma_boundaries
+pip install git+https://github.com/fusion-energy/plasma_boundaries.git
 ```
 
-Install the dependencies
-```bash
-cd plasma_boundaries
-pip install -r requirements.txt
-```
 
 ## Usage
 
