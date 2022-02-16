@@ -9,7 +9,7 @@ def derivatives(f, order):
 
     Args:
         f (callable f(x, y, c_i, pkg)): function
-        order (int): order of differenciation
+        order (int): order of differentiation
 
     Returns:
         (sympy.Add, sympy.Add): (fx^order, fy^order)

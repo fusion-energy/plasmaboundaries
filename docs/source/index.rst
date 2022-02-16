@@ -46,7 +46,7 @@ In this example, the built-in ITER plasma parameters will be used:
    psi = plasma_boundaries.compute_psi(params, config='double-null')
 ::
 
-The magnetic flux can now be calculated for any coordinates and ploted with matplotlib:
+The magnetic flux can now be calculated for any coordinates and plotted with matplotlib:
 ::
    print(psi(1.0, 0))
 

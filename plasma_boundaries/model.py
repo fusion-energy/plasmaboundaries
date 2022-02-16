@@ -129,7 +129,7 @@ def compute_N_i(params):
 
 
 def compute_psi(params, config="non-null", return_coeffs=False):
-    """Computes the magnetic flux fonction
+    """Computes the magnetic flux function
 
     Args:
         params (dict): contains the plasma parameters
@@ -140,7 +140,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
             coefficients c_i. Defaults to False.
 
     Returns:
-        (callable) or (callable, list): Magnetic flux fonction and
+        (callable) or (callable, list): Magnetic flux function and
             coefficients c_i (only if return_coeffs is True)
     """
     params["N_1"], params["N_2"], params["N_3"] = compute_N_i(params)
