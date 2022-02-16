@@ -16,8 +16,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'plasmaboundaries'
-copyright = '2020, Rémi Delaporte-Mathurin'
+project = 'plasma_boundaries'
+copyright = '2020-2022, Rémi Delaporte-Mathurin'
 author = 'Rémi Delaporte-Mathurin'
 
 # The full version, including alpha/beta/rc tags

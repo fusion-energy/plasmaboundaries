@@ -1,4 +1,4 @@
-import plasmaboundaries
+import plasma_boundaries
 import numpy as np
 from scipy.optimize import fsolve
 import sympy as sp
@@ -57,9 +57,9 @@ def constraints(p, params, config):
 
     # create sympy expressions for derivatives
     def psi(x, y):
-        return plasmaboundaries.psi(x, y, p, params["A"], config, pkg='sp')
-    psi_x_sp, psi_y_sp = plasmaboundaries.derivatives(psi, 1)
-    psi_xx_sp, psi_yy_sp = plasmaboundaries.derivatives(psi, 2)
+        return plasma_boundaries.psi(x, y, p, params["A"], config, pkg='sp')
+    psi_x_sp, psi_y_sp = plasma_boundaries.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = plasma_boundaries.derivatives(psi, 2)
 
     psi_x, psi_y = val_from_sp(psi_x_sp), val_from_sp(psi_y_sp)
     psi_xx, psi_yy = val_from_sp(psi_xx_sp), val_from_sp(psi_yy_sp)
@@ -129,7 +129,7 @@ def compute_N_i(params):
 
 
 def compute_psi(params, config="non-null", return_coeffs=False):
-    """Computes the magnetic flux fonction
+    """Computes the magnetic flux function
 
     Args:
         params (dict): contains the plasma parameters
@@ -140,7 +140,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
             coefficients c_i. Defaults to False.
 
     Returns:
-        (callable) or (callable, list): Magnetic flux fonction and
+        (callable) or (callable, list): Magnetic flux function and
             coefficients c_i (only if return_coeffs is True)
     """
     params["N_1"], params["N_2"], params["N_3"] = compute_N_i(params)
@@ -153,7 +153,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
     coefficients = fsolve(constraints, x_0, args=(params, config), xtol=10)
 
     def new_psi(X, Y, pkg='np'):
-        return plasmaboundaries.psi(
+        return plasma_boundaries.psi(
             X, Y, c_i=coefficients, A=params["A"], config=config, pkg=pkg)
 
     if return_coeffs:
