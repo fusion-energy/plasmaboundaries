@@ -23,7 +23,7 @@ You can install plasma-boundaries using Pip_ by running:
 
 Alternatively you can clone the repository:
 ::
-   git clone https://github.com/RemiTheWarrior/plasma-boundaries
+   git clone https://github.com/fusion-energy/plasma_boundaries
 ::
 
 Install the dependencies
@@ -34,7 +34,7 @@ Install the dependencies
 
 Usage
 -----
-First compute the magnetic flux :math:`\Psi` from plasma-boundaries based on a specific set of parameters.
+First compute the magnetic flux :math:`\Psi` from plasma_boundaries based on a specific set of parameters.
 In this example, the built-in ITER plasma parameters will be used:
 ::
    import plasma_boundaries
