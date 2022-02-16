@@ -1,3 +1,8 @@
+[![CI with install](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/ci_with_install.yml/badge.svg)](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/ci_with_install.yml)
+
+[![Upload Python Package](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/python-publish.yml)
+[![anaconda-publish](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/anaconda-publish.yml/badge.svg)](https://github.com/fusion-energy/plasma_boundaries/actions/workflows/anaconda-publish.yml)
+
 # plasma-boundaries
 
 This code computes and plots analytical solutions of the Grad-Shafranov (GS)
