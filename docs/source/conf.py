@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'plasmaboundaries'
+project = 'plasma_boundaries'
 copyright = '2020, Rémi Delaporte-Mathurin'
 author = 'Rémi Delaporte-Mathurin'
 

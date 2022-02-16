@@ -1,10 +1,10 @@
 import pytest
-import paramak
+import plasma_boundaries
 
 
 def test_version():
     """Check that __version__ exists and is correctly formatted"""
-    version = paramak.__version__
+    version = plasma_boundaries.__version__
     # Ensure it is given as a string
     assert isinstance(version, str)
     # Ensure is has at least two parts -- major and minor version -- separated by '.'
