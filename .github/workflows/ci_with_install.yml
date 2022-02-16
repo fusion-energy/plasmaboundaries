@@ -31,8 +31,7 @@ jobs:
       - name: install package
         run: |
           pip install --upgrade pip
-          pip install pytest
-          pip install .
+          pip install .[tests]
 
       - name: Run tests
         run: |

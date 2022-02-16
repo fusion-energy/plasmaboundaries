@@ -1,4 +1,4 @@
-import plasmaboundaries
+import plasma_boundaries
 
 import sympy as sp
 import numpy as np
@@ -34,7 +34,7 @@ def test_non_null():
         "elongation": 2
     }
     config = "non-null"
-    psi = plasmaboundaries.compute_psi(params, config=config)
+    psi = plasma_boundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 
@@ -61,7 +61,7 @@ def test_single_null():
         "elongation": 2
     }
     config = "single-null"
-    psi = plasmaboundaries.compute_psi(params, config=config)
+    psi = plasma_boundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 
@@ -90,7 +90,7 @@ def test_double_null():
         "elongation": 2
     }
     config = "double-null"
-    psi = plasmaboundaries.compute_psi(params, config=config)
+    psi = plasma_boundaries.compute_psi(params, config=config)
 
     x, y = sp.symbols("x y")
 

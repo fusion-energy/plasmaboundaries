@@ -1,32 +1,41 @@
 # plasma-boundaries
 
-This code computes and plots analytical solutions of the Grad-Shafranov (GS) equation for studying plasma equilibrium, stability and transport in fusion reactors based on the work of A. Cerfon and J. Freidberg.
+This code computes and plots analytical solutions of the Grad-Shafranov (GS)
+equation for studying plasma equilibrium, stability and transport in fusion
+reactors based on the work of A. Cerfon and J. Freidberg.
 Details on the method can be found in [*"One size fits all" analytical solutions to the Grad-Shafranov equation*, Physics of Plasmas 17 (2010)](https://doi.org/10.1063/1.3328818)
 
 Documentation can be found [here](https://plasma-boundaries.readthedocs.io/en/latest/).
 
 ## Installation
 You can install plasma-boundaries using [Pip](https://pip.pypa.io/en/stable/) by running:
-```pip install plasmaboundaries```
+```bash
+pip install plasma_boundaries
+```
 
 Alternatively you can clone the repository:
-```git clone https://github.com/RemiTheWarrior/plasma-boundaries```
+```bash
+git clone https://github.com/fusion-energy/plasma_boundaries
+```
 
 Install the dependencies
-```pip install -r requirements.txt```
+```bash
+cd plasma_boundaries
+pip install -r requirements.txt
+```
 
 ## Usage
 
 First compute the magnetic flux <img src="https://render.githubusercontent.com/render/math?math=\Psi"> from plasma-boundaries based on a specific set of parameters.
 In this example, the built-in ITER plasma parameters will be used:
 ```python
-import plasmaboundaries
+import plasma_boundaries
 
 # plasma parameters
-params = plasmaboundaries.ITER
+params = plasma_boundaries.ITER
 
 # compute magnetic flux psi(R, z)
-psi = plasmaboundaries.compute_psi(params, config='double-null')
+psi = plasma_boundaries.compute_psi(params, config='double-null')
 ```
 
 The magnetic flux can now be calculated for any coordinates and plotted with matplotlib:
@@ -73,4 +82,4 @@ params = {
 ## Run the tests
 
 You can run the tests with:
-```pytest tests/```
+```pytest tests```
