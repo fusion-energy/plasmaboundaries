@@ -1,7 +1,7 @@
 Plasmaboundaries Model
 ========================
 
-.. automodule:: plasma_boundaries.model
+.. automodule:: plasmaboundaries.model
    :members:
    :undoc-members:
    :show-inheritance:

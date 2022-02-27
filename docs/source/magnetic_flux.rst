@@ -2,7 +2,7 @@ Magnetic Flux
 ========================
 
 
-.. automodule:: plasma_boundaries.magnetic_flux
+.. automodule:: plasmaboundaries.magnetic_flux
    :members:
    :undoc-members:
    :show-inheritance:
