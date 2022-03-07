@@ -1,10 +1,10 @@
 import pytest
-import plasma_boundaries
+import plasmaboundaries
 
 
 def test_version():
     """Check that __version__ exists and is correctly formatted"""
-    version = plasma_boundaries.__version__
+    version = plasmaboundaries.__version__
     # Ensure it is given as a string
     assert isinstance(version, str)
     # Ensure is has at least two parts -- major and minor version -- separated by '.'

@@ -1,4 +1,4 @@
-import plasma_boundaries
+import plasmaboundaries
 import numpy as np
 from scipy.optimize import fsolve
 import sympy as sp
@@ -57,9 +57,9 @@ def constraints(p, params, config):
 
     # create sympy expressions for derivatives
     def psi(x, y):
-        return plasma_boundaries.psi(x, y, p, params["A"], config, pkg='sp')
-    psi_x_sp, psi_y_sp = plasma_boundaries.derivatives(psi, 1)
-    psi_xx_sp, psi_yy_sp = plasma_boundaries.derivatives(psi, 2)
+        return plasmaboundaries.psi(x, y, p, params["A"], config, pkg='sp')
+    psi_x_sp, psi_y_sp = plasmaboundaries.derivatives(psi, 1)
+    psi_xx_sp, psi_yy_sp = plasmaboundaries.derivatives(psi, 2)
 
     psi_x, psi_y = val_from_sp(psi_x_sp), val_from_sp(psi_y_sp)
     psi_xx, psi_yy = val_from_sp(psi_xx_sp), val_from_sp(psi_yy_sp)
@@ -153,7 +153,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
     coefficients = fsolve(constraints, x_0, args=(params, config), xtol=10)
 
     def new_psi(X, Y, pkg='np'):
-        return plasma_boundaries.psi(
+        return plasmaboundaries.psi(
             X, Y, c_i=coefficients, A=params["A"], config=config, pkg=pkg)
 
     if return_coeffs:

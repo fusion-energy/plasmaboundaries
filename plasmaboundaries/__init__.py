@@ -4,7 +4,7 @@ try:
 except (ModuleNotFoundError, ImportError):
     from importlib_metadata import version, PackageNotFoundError
 try:
-    __version__ = version("plasma_boundaries")
+    __version__ = version("plasmaboundaries")
 except PackageNotFoundError:
     from setuptools_scm import get_version
 
