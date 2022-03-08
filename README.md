@@ -1,3 +1,8 @@
+[![CI with install](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/ci_with_install.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/ci_with_install.yml)
+
+[![Upload Python Package](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml)
+[![anaconda-publish](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/anaconda-publish.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/anaconda-publish.yml)
+
 # plasma-boundaries
 
 This code computes and plots analytical solutions of the Grad-Shafranov (GS)
@@ -10,18 +15,18 @@ Documentation can be found [here](https://plasma-boundaries.readthedocs.io/en/la
 ## Installation (Conda)
 You can install plasma-boundaries using [Conda](https://docs.conda.io/en/latest/) by running:
 ```bash
-conda install -c fusion-energy -c conda-forge plasma_boundaries
+conda install -c fusion-energy -c conda-forge plasmaboundaries
 ```
 
 ## Installation (pip)
 You can install plasma-boundaries using [Pip](https://pip.pypa.io/en/stable/) by running:
 ```bash
-pip install plasma_boundaries
+pip install plasmaboundaries
 ```
 
 Alternatively you can pip install from the repository:
 ```bash
-pip install git+https://github.com/fusion-energy/plasma_boundaries.git
+pip install git+https://github.com/fusion-energy/plasmaboundaries.git
 ```
 
 
@@ -30,13 +35,13 @@ pip install git+https://github.com/fusion-energy/plasma_boundaries.git
 First compute the magnetic flux <img src="https://render.githubusercontent.com/render/math?math=\Psi"> from plasma-boundaries based on a specific set of parameters.
 In this example, the built-in ITER plasma parameters will be used:
 ```python
-import plasma_boundaries
+import plasmaboundaries
 
 # plasma parameters
-params = plasma_boundaries.ITER
+params = plasmaboundaries.ITER
 
 # compute magnetic flux psi(R, z)
-psi = plasma_boundaries.compute_psi(params, config='double-null')
+psi = plasmaboundaries.compute_psi(params, config='double-null')
 ```
 
 The magnetic flux can now be calculated for any coordinates and plotted with matplotlib:

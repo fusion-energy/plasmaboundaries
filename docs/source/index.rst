@@ -1,9 +1,9 @@
-.. plasma_boundaries documentation master file, created by
+.. plasmaboundaries documentation master file, created by
    sphinx-quickstart on Wed Jul 15 09:26:22 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-plasma_boundaries
+plasmaboundaries
 ============================================
 This code computes and plots analytical solutions of the Grad-Shafranov (GS) equation for studying plasma equilibrium, stability and transport in fusion reactors based on the work of A. Cerfon and J. Freidberg [1]_.
 
@@ -18,12 +18,12 @@ Installation
 -------------
 You can install plasma-boundaries using Pip_ by running:
 ::
-   pip install plasma_boundaries
+   pip install plasmaboundaries
 ::
 
 Alternatively you can clone the repository:
 ::
-   git clone https://github.com/fusion-energy/plasma_boundaries
+   git clone https://github.com/fusion-energy/plasmaboundaries
 ::
 
 Install the dependencies
@@ -34,16 +34,16 @@ Install the dependencies
 
 Usage
 -----
-First compute the magnetic flux :math:`\Psi` from plasma_boundaries based on a specific set of parameters.
+First compute the magnetic flux :math:`\Psi` from plasmaboundaries based on a specific set of parameters.
 In this example, the built-in ITER plasma parameters will be used:
 ::
-   import plasma_boundaries
+   import plasmaboundaries
 
    # plasma parameters
-   params = plasma_boundaries.ITER
+   params = plasmaboundaries.ITER
 
    # compute magnetic flux psi(R, z)
-   psi = plasma_boundaries.compute_psi(params, config='double-null')
+   psi = plasmaboundaries.compute_psi(params, config='double-null')
 ::
 
 The magnetic flux can now be calculated for any coordinates and plotted with matplotlib:

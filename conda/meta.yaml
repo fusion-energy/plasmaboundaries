@@ -1,4 +1,4 @@
-{% set name = "plasma_boundaries" %}
+{% set name = "plasmaboundaries" %}
 
 package:
   name: "{{ name|lower }}"
@@ -25,7 +25,7 @@ requirements:
 
 test:
   imports:
-    - plasma_boundaries
+    - plasmaboundaries
   requires:
     - pytest
   source_files:
@@ -37,13 +37,13 @@ test:
     - python examples/plot_NSTX.py
 
 about:
-  home: "https://github.com/fusion-energy/plasma_boundaries"
+  home: "https://github.com/fusion-energy/plasmaboundaries"
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
   doc_url: https://plasma-boundaries.readthedocs.io/en/latest/
-  dev_url: https://github.com/fusion-energy/plasma_boundaries
-  summary: plasma_boundaries - Determine plasma flux functions for various plasma parameters and plasma configurations.
+  dev_url: https://github.com/fusion-energy/plasmaboundaries
+  summary: plasmaboundaries - Determine plasma flux functions for various plasma parameters and plasma configurations.
 
 extra:
   recipe-maintainers:
