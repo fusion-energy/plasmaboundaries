@@ -2,6 +2,7 @@
 
 [![Upload Python Package](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml)
 [![conda-publish](https://anaconda.org/conda-forge/plasmaboundaries/badges/version.svg)](https://anaconda.org/conda-forge/plasmaboundaries)
+[![PyPI version](https://badge.fury.io/py/plasmaboundaries.svg)](https://badge.fury.io/py/plasmaboundaries)
 
 # plasma-boundaries
 
