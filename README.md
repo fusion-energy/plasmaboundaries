@@ -1,7 +1,8 @@
 [![CI with install](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/ci_with_install.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/ci_with_install.yml)
 
 [![Upload Python Package](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/python-publish.yml)
-[![anaconda-publish](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/anaconda-publish.yml/badge.svg)](https://github.com/fusion-energy/plasmaboundaries/actions/workflows/anaconda-publish.yml)
+[![conda-publish](https://anaconda.org/conda-forge/plasmaboundaries/badges/version.svg)](https://anaconda.org/conda-forge/plasmaboundaries)
+[![PyPI version](https://badge.fury.io/py/plasmaboundaries.svg)](https://badge.fury.io/py/plasmaboundaries)
 
 # plasma-boundaries
 
