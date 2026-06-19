@@ -66,7 +66,7 @@ def constraints(p, params, config):
 
     # create test points
     aspect_ratio = params["aspect_ratio"]
-    triangularity = params["aspect_ratio"]
+    triangularity = params["triangularity"]
     elongation = params["elongation"]
     outer_equatorial_point, inner_equatorial_point, high_point = \
         test_points(aspect_ratio, elongation, triangularity)
