@@ -211,19 +211,12 @@ def get_separatrix_coordinates(params, config, step=0.01):
     separatrix = plt.contour(X, Y, Z, levels=[0], colors="white", linestyles="dashed")
 
     # extract points coordinates
-    if hasattr(separatrix, "collections"):
-        paths = separatrix.collections[0].get_paths()
-    else:
-        paths = separatrix.get_paths()
+    paths = separatrix.get_paths()
     points = np.empty((0, 2))
     for p in paths:
         v = p.vertices
         points = np.append(points, v, 0)
 
     # remove contours
-    if hasattr(separatrix, "collections"):
-        for cont in separatrix.collections:
-            cont.remove()
-    else:
-        separatrix.remove()
+    separatrix.remove()
     return points
