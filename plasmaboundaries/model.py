@@ -150,7 +150,7 @@ def compute_psi(params, config="non-null", return_coeffs=False):
     elif config == "single-null":
         coefficient_number = 12
     x_0 = np.zeros(coefficient_number)
-    coefficients = fsolve(constraints, x_0, args=(params, config), xtol=10)
+    coefficients = fsolve(constraints, x_0, args=(params, config), xtol=1e-3)
 
     def new_psi(X, Y, pkg='np'):
         return plasmaboundaries.psi(
