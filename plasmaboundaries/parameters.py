@@ -3,7 +3,7 @@ import numpy as np
 
 ITER = {
     "aspect_ratio": 0.32,  # a/R_0
-    "A": -0.155,  # A, arbitrary ?
+    "A": -0.155,  # controls logarithmic GS equilibrium contribution
     "elongation": 1.7,  # kappa
     "triangularity": 0.33,  # delta
 }
