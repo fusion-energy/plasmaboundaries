@@ -66,7 +66,7 @@ def constraints(p, params, config):
 
     # create test points
     aspect_ratio = params["aspect_ratio"]
-    triangularity = params["aspect_ratio"]
+    triangularity = params["triangularity"]
     elongation = params["elongation"]
     outer_equatorial_point, inner_equatorial_point, high_point = \
         test_points(aspect_ratio, elongation, triangularity)
@@ -211,12 +211,12 @@ def get_separatrix_coordinates(params, config, step=0.01):
     separatrix = plt.contour(X, Y, Z, levels=[0], colors="white", linestyles="dashed")
 
     # extract points coordinates
+    paths = separatrix.get_paths()
     points = np.empty((0, 2))
-    for p in separatrix.collections[0].get_paths():
+    for p in paths:
         v = p.vertices
         points = np.append(points, v, 0)
 
     # remove contours
-    for cont in separatrix.collections:
-        cont.remove()
+    separatrix.remove()
     return points
